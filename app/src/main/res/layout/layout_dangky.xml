@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundDangNhap"
+    >
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/size30sp"
+        android:text="@string/dangky"
+        android:layout_above="@+id/LnkhungDangNhap"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/size70dp"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:layout_width="@dimen/size150dp"
+        android:layout_height="@dimen/size150dp"
+        android:src="@drawable/logodangnhap"
+        android:layout_marginTop="@dimen/size70dp"
+        android:layout_alignRight="@+id/LnkhungDangNhap"
+        />I
+
+    <LinearLayout
+        android:id="@+id/LnkhungDangNhap"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edEmailDK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email"
+            android:textColor="@color/colorGray"
+            android:padding="@dimen/size10dp"
+            android:layout_margin="@dimen/size5dp"
+            android:background="@color/colorWhite"
+            android:textColorHint="@color/colorGray"
+            android:drawableLeft="@drawable/user"
+            android:drawablePadding="@dimen/size5dp"
+            android:singleLine="true"
+            android:text="thanh"/>
+
+        <EditText
+            android:id="@+id/edMatKhauDK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/nhapmatkhau"
+            android:textColor="@color/colorGray"
+            android:padding="@dimen/size10dp"
+            android:layout_margin="@dimen/size5dp"
+            android:background="@color/colorWhite"
+            android:textColorHint="@color/colorGray"
+            android:drawableLeft="@drawable/password"
+            android:drawablePadding="@dimen/size5dp"
+            android:singleLine="true"
+            android:password="true"
+            android:text="123"/>
+
+
+        <Button
+            android:id="@+id/btnDangKyDK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dangky"
+            android:padding="@dimen/size10dp"
+            android:background="@color/colorPrimary"
+            android:layout_margin="@dimen/size5dp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+</RelativeLayout>

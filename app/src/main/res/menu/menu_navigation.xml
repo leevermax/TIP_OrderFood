@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/itTrangChu"
+            android:title="@string/trangchu"
+            android:icon="@drawable/trangchu"
+            android:checked="true"
+            />
+        <item
+            android:id="@+id/itThucDon"
+            android:title="@string/thucdon"
+            android:icon="@drawable/monanicon"
+            />
+        <item
+            android:title="@string/nhabep"
+            android:icon="@drawable/logodangnhap"
+            />
+        <item
+            android:title="@string/nhanvien"
+            android:icon="@drawable/nhanvien"
+            />
+        <item
+            android:title="@string/thongke"
+            android:icon="@drawable/thongke"
+            />
+        <item
+            android:title="@string/caidat"
+            android:icon="@drawable/caidat"
+            />
+        <item
+            android:id="@+id/iDangNhap"
+            android:title="@string/dangnhap"
+            android:icon="@drawable/loginicon"
+            />
+        <item
+            android:id="@+id/iDangXuat"
+            android:title="@string/dangxuat"
+            android:icon="@drawable/logouticon"
+            />
+    </group>
+
+</menu>
