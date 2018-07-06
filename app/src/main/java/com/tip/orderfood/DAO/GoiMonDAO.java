@@ -13,7 +13,7 @@ public class GoiMonDAO {
 
     SQLiteDatabase database;
     public  GoiMonDAO(Context context){
-
+///
         CreateDatabase createDatabase = new CreateDatabase(context);
         database = createDatabase.open();
     }
