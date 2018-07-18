@@ -10,12 +10,7 @@
         android:roundIcon="@drawable/logodangnhap"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DangNhapActivity">
 
-        </activity>
-        <activity android:name=".ThemThongTinActivity">
-
-        </activity>
         <activity android:name=".TrangChuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +18,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".DangNhapActivity">
+
+        </activity>
+        <activity android:name=".ThemThongTinActivity">
+
+        </activity>
+        <activity android:name=".DangKyActivity">
+
+        </activity>
+
         <activity android:name=".ThemBanAnActivity" android:theme="@style/PopUpActivity">
 
         </activity>
@@ -37,7 +42,11 @@
             android:label="@string/soluong">
 
         </activity>
-        <activity android:name=".StartActivity" android:label="@string/xinchao">
+        <activity android:name=".ThanhToanActivity" android:label="@string/thanhtoan">
+
+
+        </activity>
+        <activity android:name=".XacNhanThanhToanActivity" android:label="@string/xacnhanthanhtoan" android:theme="@style/PopUpActivity">
 
 
         </activity>

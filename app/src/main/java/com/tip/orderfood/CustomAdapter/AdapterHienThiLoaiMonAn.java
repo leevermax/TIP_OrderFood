@@ -1,6 +1,7 @@
 package com.tip.orderfood.CustomAdapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class AdapterHienThiLoaiMonAn extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return loaiMonAnDTOList.get(position).getMaLoai();
+        return position;
     }
 
     public class  ViewHolderLoaiMonAn{
@@ -48,7 +49,7 @@ public class AdapterHienThiLoaiMonAn extends BaseAdapter {
         if (view == null){
             viewHolderLoaiMonAn = new ViewHolderLoaiMonAn();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.custom_layout_spinloaithucdon,parent,false);
+            view = inflater.inflate(layout,parent,false);
 
             viewHolderLoaiMonAn.txtTenLoai = view.findViewById(R.id.txtTenLoai);
 
@@ -70,7 +71,7 @@ public class AdapterHienThiLoaiMonAn extends BaseAdapter {
         if (view == null){
             viewHolderLoaiMonAn = new ViewHolderLoaiMonAn();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.custom_layout_spinloaithucdon,parent,false);
+            view = inflater.inflate(layout,parent,false);
 
             viewHolderLoaiMonAn.txtTenLoai = view.findViewById(R.id.txtTenLoai);
 

@@ -2,19 +2,29 @@ package com.tip.orderfood;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.tip.orderfood.DAO.NhanVienDAO;
 
 public class DangNhapActivity extends AppCompatActivity implements View.OnClickListener{
     Button btnDongYDN, btnDangKyDN;
     EditText edEmailDN, edMatKhauDN;
     NhanVienDAO nhanVienDAO;
+    FirebaseAuth mAuth;
+
+    String UID;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,9 +49,11 @@ public class DangNhapActivity extends AppCompatActivity implements View.OnClickL
         edMatKhauDN = findViewById(R.id.edMatKhauDN);
         edEmailDN = findViewById(R.id.edEmailDN);
         nhanVienDAO = new NhanVienDAO(this);
+
+        mAuth = FirebaseAuth.getInstance();
     }
     private void showButton(){
-        boolean kiemTra = nhanVienDAO.kiemTraNV();
+
         btnDangKyDN.setVisibility(View.GONE);
 //        if(kiemTra){
 //
@@ -79,16 +91,28 @@ public class DangNhapActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void btnDongYDN() {
-        String sTenDN = edEmailDN.getText().toString();
-        String sMatKhau  = edMatKhauDN.getText().toString();
-        int kTra = nhanVienDAO.kiemTraDangNhap(sTenDN,sMatKhau);
-        if (kTra != -1){
-            Intent iTrangChu = new Intent(DangNhapActivity.this,TrangChuActivity.class);
-            iTrangChu.putExtra("tendn",edEmailDN.getText().toString());
-            iTrangChu.putExtra("maNhanVien",kTra);
-            startActivity(iTrangChu);
-        } else {
-            Toast.makeText(this, "lol", Toast.LENGTH_SHORT).show();
-        }
+        final String sTenDN = edEmailDN.getText().toString();
+        final String sMatKhau  = edMatKhauDN.getText().toString();
+
+        mAuth.signInWithEmailAndPassword(sTenDN, sMatKhau)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Intent iTrangChu = new Intent(DangNhapActivity.this,TrangChuActivity.class);
+                            iTrangChu.putExtra("emailHT",sTenDN);
+                            iTrangChu.putExtra("matKhauHT",sMatKhau);
+                            startActivity(iTrangChu);
+                        } else {
+
+                            Toast.makeText(DangNhapActivity.this, getResources().getString(R.string.dangnhapthatbai),
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+
+                        // ...
+                    }
+                });
     }
 }

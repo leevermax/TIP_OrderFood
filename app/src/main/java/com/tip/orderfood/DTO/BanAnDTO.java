@@ -1,23 +1,23 @@
 package com.tip.orderfood.DTO;
 
 public class BanAnDTO {
-    int maBan;
-    String tenBan;
-    boolean duocChon;
+    String tenBan,maBan;
+    boolean tinhTrang;
 
-    public boolean isDuocChon() {
-        return duocChon;
+    public BanAnDTO() {
     }
 
-    public void setDuocChon(boolean duocChon) {
-        this.duocChon = duocChon;
+    public BanAnDTO(String tenBan, boolean tinhTrang) {
+        this.tenBan = tenBan;
+        this.maBan = maBan;
+        this.tinhTrang = tinhTrang;
     }
 
-    public int getMaBan() {
+    public String getMaBan() {
         return maBan;
     }
 
-    public void setMaBan(int maBan) {
+    public void setMaBan(String maBan) {
         this.maBan = maBan;
     }
 
@@ -29,4 +29,11 @@ public class BanAnDTO {
         this.tenBan = tenBan;
     }
 
+    public boolean isTinhTrang() {
+        return tinhTrang;
+    }
+
+    public void setTinhTrang(boolean tinhTrang) {
+        this.tinhTrang = tinhTrang;
+    }
 }

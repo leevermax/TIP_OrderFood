@@ -8,9 +8,9 @@
 
     <TextView
         android:id="@+id/txtTenLoai"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/colorPrimary"
         android:padding="@dimen/size5dp"
         android:textSize="@dimen/size18sp"
         />

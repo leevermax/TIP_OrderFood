@@ -1,22 +1,31 @@
 package com.tip.orderfood.DTO;
 
 public class MonAnDTO {
-    int maMonAn, maLoai;
-    String tenMonAn, giaTien, hinhAnh;
+    String maMonAn;
+    int giaTien, lanGoi;
+    String tenMonAn, maLoai,  hinhAnh;
 
-    public int getMaMonAn() {
+    public String getMaMonAn() {
         return maMonAn;
     }
 
-    public void setMaMonAn(int maMonAn) {
+    public int getLanGoi() {
+        return lanGoi;
+    }
+
+    public void setLanGoi(int lanGoi) {
+        this.lanGoi = lanGoi;
+    }
+
+    public void setMaMonAn(String maMonAn) {
         this.maMonAn = maMonAn;
     }
 
-    public int getMaLoai() {
+    public String getMaLoai() {
         return maLoai;
     }
 
-    public void setMaLoai(int maLoai) {
+    public void setMaLoai(String maLoai) {
         this.maLoai = maLoai;
     }
 
@@ -28,11 +37,11 @@ public class MonAnDTO {
         this.tenMonAn = tenMonAn;
     }
 
-    public String getGiaTien() {
+    public int getGiaTien() {
         return giaTien;
     }
 
-    public void setGiaTien(String giaTien) {
+    public void setGiaTien(int giaTien) {
         this.giaTien = giaTien;
     }
 

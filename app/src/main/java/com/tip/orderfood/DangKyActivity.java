@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,17 +15,26 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class DangKyActivity extends AppCompatActivity
 {
-    EditText edEmailDK, edMatKhauDK;
+    EditText edEmailDK, edMatKhauDK, edReMatKhauDK;
     Button btnDangKyDK;
-    String UIDnv = "";
+
     FirebaseAuth mAuth;
+    DatabaseReference root;
+
+    String email;
+    String UIDnv,password,emailHT,matKhauHT;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_dangky);
+
+
 
         addControls();
         addEvents();
@@ -35,9 +43,14 @@ public class DangKyActivity extends AppCompatActivity
     private void addControls() {
         edMatKhauDK = findViewById(R.id.edMatKhauDK);
         edEmailDK = findViewById(R.id.edEmailDK);
+        edReMatKhauDK = findViewById(R.id.edReMatKhauDK);
         btnDangKyDK = findViewById(R.id.btnDangKyDK);
 
         mAuth = FirebaseAuth.getInstance();
+        root = FirebaseDatabase.getInstance().getReference().child("USERS");
+        Intent intent = getIntent();
+        emailHT = intent.getStringExtra("emailHT");
+        matKhauHT = intent.getStringExtra("matKhauHT");
     }
     private void addEvents() {
         btnDangKyDK.setOnClickListener(new View.OnClickListener() {
@@ -45,34 +58,63 @@ public class DangKyActivity extends AppCompatActivity
             public void onClick(View v) {
                 dangKy();
 
+
             }
         });
 
     }
     private void dangKy(){
-        String email = edEmailDK.getText().toString();
-        String password = edMatKhauDK.getText().toString();
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Intent iThemThongTin = new Intent(DangKyActivity.this,ThemThongTinActivity.class);
+        boolean ins = true;
+        email = edEmailDK.getText().toString().trim();
+        password = edMatKhauDK.getText().toString();
+        String rePasswork = edReMatKhauDK.getText().toString();
 
-                            iThemThongTin.putExtra("UIDNhanVien",UIDnv);
-                            startActivity(iThemThongTin);
+        if (email != null && !email.equals("")){
+            if (!password.equals(rePasswork)){
+                Toast.makeText(DangKyActivity.this,getResources().getString(R.string.matkhaukhongtrung), Toast.LENGTH_SHORT).show();
+            } else {
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
 
-                        } else {
-                            // If sign in fails, display a message to the user.
+                                    tiepTucDangKy();
 
-                            Toast.makeText(DangKyActivity.this,getResources().getString(R.string.themthatbai),
-                                    Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // If sign in fails, display a message to the user.
 
-                        }
+                                    Toast.makeText(DangKyActivity.this,getResources().getString(R.string.themthatbai),
+                                            Toast.LENGTH_SHORT).show();
 
-                        // ...
-                    }
-                });
+                                }
+
+                                // ...
+                            }
+                        });
+
+            }
+        } else {
+            Toast.makeText(DangKyActivity.this,getResources().getString(R.string.emailempty),
+                    Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+    private void tiepTucDangKy(){
+
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            UIDnv = user.getUid().toString();
+
+            Intent iThemThongTin = new Intent(DangKyActivity.this,ThemThongTinActivity.class);
+            iThemThongTin.putExtra("emailHT",emailHT);
+            iThemThongTin.putExtra("matKhauHT",matKhauHT);
+            iThemThongTin.putExtra("idnv",UIDnv);
+            iThemThongTin.putExtra("email",email);
+            startActivity(iThemThongTin);
+
+
     }
 
 

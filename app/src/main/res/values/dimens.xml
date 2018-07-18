@@ -16,4 +16,7 @@
     <dimen name="size50dp">50dp</dimen>
     <dimen name="size40dp">40dp</dimen>
     <dimen name="size30dp">30dp</dimen>
+    <dimen name="size55dp">55dp</dimen>
+    <dimen name="size15dp">15dp</dimen>
+    <dimen name="size12sp">12sp</dimen>
 </resources>

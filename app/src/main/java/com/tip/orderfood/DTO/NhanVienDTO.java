@@ -1,32 +1,60 @@
 package com.tip.orderfood.DTO;
 
 public class NhanVienDTO {
-    int maNV;
-    int CMND;
-    int maQuyen;
-    String idUser,hoTen,matKhau,gioiTinh,ngaySinh;
 
-    public int getMaNV() {
-        return maNV;
+    String maQuyen,email,uid,cmnd,hoTen,gioiTinh,ngaySinh,phone;
+
+    public NhanVienDTO() {
     }
 
-    public void setMaNV(int maNV) {
-        this.maNV = maNV;
+    public NhanVienDTO(String maQuyen, String email, String cmnd, String hoTen, String gioiTinh, String ngaySinh,String phone) {
+        this.maQuyen = maQuyen;
+        this.email = email;
+        this.cmnd = cmnd;
+        this.hoTen = hoTen;
+        this.gioiTinh = gioiTinh;
+        this.ngaySinh = ngaySinh;
+        this.phone = phone;
     }
 
-    public int getCMND() {
-        return CMND;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setCMND(int CMND) {
-        this.CMND = CMND;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public int getMaQuyen() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCmnd() {
+        return cmnd;
+    }
+
+    public void setCmnd(String cmnd) {
+        this.cmnd = cmnd;
+    }
+
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getMaQuyen() {
         return maQuyen;
     }
 
-    public void setMaQuyen(int maQuyen) {
+    public void setMaQuyen(String maQuyen) {
         this.maQuyen = maQuyen;
     }
 
@@ -36,23 +64,6 @@ public class NhanVienDTO {
 
     public void setHoTen(String hoTen) {
         this.hoTen = hoTen;
-    }
-
-
-    public String getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(String idUser) {
-        this.idUser = idUser;
-    }
-
-    public String getMatKhau() {
-        return matKhau;
-    }
-
-    public void setMatKhau(String matKhau) {
-        this.matKhau = matKhau;
     }
 
     public String getGioiTinh() {

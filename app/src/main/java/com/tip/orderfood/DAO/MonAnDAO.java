@@ -4,55 +4,65 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.tip.orderfood.DTO.MonAnDTO;
 import com.tip.orderfood.Database.CreateDatabase;
+import com.tip.orderfood.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MonAnDAO {
-    SQLiteDatabase database;
+    Context context;
+    DatabaseReference root = FirebaseDatabase.getInstance().getReference().child("MonAn");
     public  MonAnDAO(Context context){
-        CreateDatabase createDatabase = new CreateDatabase(context);
-        database = createDatabase.open();
+        this.context = context;
     }
 
-    public boolean themMonAn(MonAnDTO monAnDTO){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(CreateDatabase.TB_MONAN_tenMon,monAnDTO.getTenMonAn());
-        contentValues.put(CreateDatabase.TB_MONAN_giaTien,monAnDTO.getGiaTien());
-        contentValues.put(CreateDatabase.TB_MONAN_maLoai,monAnDTO.getMaLoai());
-        contentValues.put(CreateDatabase.TB_MONAN_hinhAnh, monAnDTO.getHinhAnh());
-
-        long kiemtra = database.insert(CreateDatabase.TB_MONAN,null,contentValues);
-        if(kiemtra != 0){
-            return true;
-        }else{
-            return false;
-        }
+    public String themMonAn(MonAnDTO monAnDTO){
+        String key = root.push().getKey();
+        root.child(key).setValue(monAnDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, R.string.themthanhcong, Toast.LENGTH_SHORT).show();
+            }
+        });
+        return key;
 
     }
 
-    public List<MonAnDTO> LayDanhSachMonAnTheoLoai(int maloai){
-        List<MonAnDTO> monAnDTOs = new ArrayList<MonAnDTO>();
-        String truyvan = "SELECT * FROM " + CreateDatabase.TB_MONAN + " WHERE " + CreateDatabase.TB_MONAN_maLoai + " = '" + maloai + "' ";
-        Cursor cursor = database.rawQuery(truyvan,null);
-        cursor.moveToFirst();
+    public Query LayDanhSachMonAnTheoLoai(String maLoai){
+        Query query = root.orderByChild("maLoai").equalTo(maLoai);
 
-        while(!(cursor.isAfterLast())){
-            MonAnDTO monAnDTO = new MonAnDTO();
-            monAnDTO.setHinhAnh(cursor.getString(cursor.getColumnIndex(CreateDatabase.TB_MONAN_hinhAnh)) + "");
-            monAnDTO.setTenMonAn(cursor.getString(cursor.getColumnIndex(CreateDatabase.TB_MONAN_tenMon)));
-            monAnDTO.setGiaTien(cursor.getString(cursor.getColumnIndex(CreateDatabase.TB_MONAN_giaTien)));
-            monAnDTO.setMaMonAn(cursor.getInt(cursor.getColumnIndex(CreateDatabase.TB_MONAN_maMon)));
-            monAnDTO.setMaLoai(cursor.getInt(cursor.getColumnIndex(CreateDatabase.TB_MONAN_maLoai)));
+        return query;
 
-            monAnDTOs.add(monAnDTO);
-            cursor.moveToNext();
-        }
+    }
 
-        return monAnDTOs;
+    public void tangDiemMonAn(String maMonAn, int soLuong){
+        final  int sl = soLuong;
+        final String m = maMonAn;
+        root.child(maMonAn).child("lanGoi").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int count = dataSnapshot.getValue(Integer.class) + sl;
+                root.child(m).child("lanGoi").setValue(count);
 
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

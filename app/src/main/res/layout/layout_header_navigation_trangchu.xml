@@ -20,7 +20,9 @@
         android:id="@+id/txtTenNhanVien_navigation"
         android:layout_below="@+id/logoNavigation"
         android:textSize="@dimen/size18sp"
+        android:textColor="@color/colorRed"
         android:textStyle="bold"
+        android:text="@string/khachhang"
         android:layout_alignLeft="@+id/logoNavigation"/>
 
 </RelativeLayout>

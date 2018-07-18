@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.tip.orderfood.DAO.LoaiMonAnDAO;
+import com.tip.orderfood.DTO.LoaiMonAnDTO;
+import com.tip.orderfood.Support.SuaDuLieu;
 
 public class ThemLoaiThucDonActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -42,12 +44,17 @@ public class ThemLoaiThucDonActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onClick(View v) {
+        SuaDuLieu suaDuLieu = new SuaDuLieu();
         String sTenLoaiThucDon = edTenLoai.getText().toString();
+        String hinhAnh = "null";
+        sTenLoaiThucDon = suaDuLieu.toiUuChuoi(sTenLoaiThucDon);
         if(sTenLoaiThucDon == null || sTenLoaiThucDon.equals("")){
             Toast.makeText(this,getResources().getString(R.string.vuilongnhapdulieu),Toast.LENGTH_SHORT).show();
         }else{
-
-            boolean kiemtra = loaiMonAnDAO.themLoaiMonAn(sTenLoaiThucDon);
+            LoaiMonAnDTO loaiMonAnDTO = new LoaiMonAnDTO();
+            loaiMonAnDTO.setTenLoai(sTenLoaiThucDon);
+            loaiMonAnDTO.setHinhAnh(hinhAnh);
+            boolean kiemtra = loaiMonAnDAO.themLoaiMonAn(loaiMonAnDTO);
             Intent iDuLieu = new Intent();
             iDuLieu.putExtra("kiemtraloaithucdon",kiemtra);
             setResult(Activity.RESULT_OK,iDuLieu);

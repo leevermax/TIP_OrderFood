@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,13 +16,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.tip.orderfood.CustomAdapter.AdapterHienThiLoaiMonAnThucDon;
 import com.tip.orderfood.DAO.LoaiMonAnDAO;
+import com.tip.orderfood.DAO.NhanVienDAO;
 import com.tip.orderfood.DTO.LoaiMonAnDTO;
 import com.tip.orderfood.R;
 import com.tip.orderfood.ThemThucDonActiivity;
 import com.tip.orderfood.TrangChuActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HienThiThucDonFragment extends android.support.v4.app.Fragment {
@@ -29,7 +38,11 @@ public class HienThiThucDonFragment extends android.support.v4.app.Fragment {
     List<LoaiMonAnDTO> loaiMonAnDTOS;
     LoaiMonAnDAO loaiMonAnDAO;
     FragmentManager fragmentManager;
-    int maBan;
+    AdapterHienThiLoaiMonAnThucDon adapterHienThiLoaiMonAnThucDon;
+    NhanVienDAO nhanVienDAO;
+    String maBan, maGoiMon;
+    String Uid;
+    FirebaseUser user;
 
     @Nullable
     @Override
@@ -42,30 +55,55 @@ public class HienThiThucDonFragment extends android.support.v4.app.Fragment {
 
         fragmentManager = getActivity().getSupportFragmentManager();
 
-        loaiMonAnDAO = new LoaiMonAnDAO(getActivity());
-        loaiMonAnDTOS = loaiMonAnDAO.layDanhSachLoaiMonAn();
+        loaiMonAnDTOS = new ArrayList<>();
+        nhanVienDAO = new NhanVienDAO(getActivity());
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
-        AdapterHienThiLoaiMonAnThucDon adapter = new AdapterHienThiLoaiMonAnThucDon(getActivity(),R.layout.custom_layout_hienloaimonan,loaiMonAnDTOS);
-        gvView.setAdapter(adapter);
-        adapter.notifyDataSetInvalidated();
+        loaiMonAnDAO = new LoaiMonAnDAO(getActivity());
+
+        adapterHienThiLoaiMonAnThucDon = new AdapterHienThiLoaiMonAnThucDon(getActivity(),R.layout.custom_layout_hienloaimonan,loaiMonAnDTOS);
+        gvView.setAdapter(adapterHienThiLoaiMonAnThucDon);
+        loaiMonAnDAO.layDanhSachLoaiMonAn().addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                loaiMonAnDTOS.clear();
+                for (DataSnapshot d: dataSnapshot.getChildren()){
+                    LoaiMonAnDTO loaiMonAnDTO = d.getValue(LoaiMonAnDTO.class);
+                    loaiMonAnDTO.setMaLoai(d.getKey().toString());
+                    loaiMonAnDTOS.add(loaiMonAnDTO);
+                }
+                adapterHienThiLoaiMonAnThucDon.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
 
         Bundle bDuLieuThucDon = getArguments();
 
 
         if (bDuLieuThucDon != null){
-            maBan = bDuLieuThucDon.getInt("maBan");
+            maBan = bDuLieuThucDon.getString("maBan");
+            maGoiMon = bDuLieuThucDon.getString("maGoiMon");
         }
 
         gvView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int maLoai = loaiMonAnDTOS.get(position).getMaLoai();
+                String maLoai = loaiMonAnDTOS.get(position).getMaLoai();
 
                 HienThiDanhMonAnFragment hienThiDanhMonAnFragment = new HienThiDanhMonAnFragment();
 
                 Bundle bundle = new Bundle();
-                bundle.putInt("maLoai",maLoai);
-                bundle.putInt("maBan",maBan);
+                bundle.putString("maLoai",maLoai);
+                bundle.putString("maBan",maBan);
+                bundle.putString("maGoiMon",maGoiMon);
                 hienThiDanhMonAnFragment.setArguments(bundle);
 
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -75,7 +113,15 @@ public class HienThiThucDonFragment extends android.support.v4.app.Fragment {
 
         });
 
-
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(event.getAction() == KeyEvent.ACTION_DOWN){
+                    getFragmentManager().popBackStack("trangchu", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
+                return false;
+            }
+        });
 
 
         return view;
@@ -88,9 +134,29 @@ public class HienThiThucDonFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuItem itThemBanAn = menu.add(1,R.id.itThemThucDon,1,R.string.themthucdon);
-        itThemBanAn.setIcon(R.drawable.logodangnhap);
-        itThemBanAn.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+        final Menu menuOnFire =  menu;
+        if (user != null){
+            Uid = user.getUid().toString();
+            nhanVienDAO.kiemTraQuyen(Uid).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    int role = Integer.parseInt(dataSnapshot.getValue().toString());
+                    if(role == 1 || role == 2){
+                        MenuItem itThemBanAn = menuOnFire.add(1,R.id.itThemThucDon,1,R.string.themthucdon);
+                        itThemBanAn.setIcon(R.drawable.logodangnhap);
+                        itThemBanAn.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
     }
 
     @Override

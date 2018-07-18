@@ -1,24 +1,32 @@
 package com.tip.orderfood.DTO;
 
 public class LoaiMonAnDTO {
-    int maLoai;
-    String TenLoai;
+    String maLoai;
+    String tenLoai;
     String hinhAnh;
 
-    public int getMaLoai() {
+    public LoaiMonAnDTO(String maLoai, String tenLoai) {
+        this.maLoai = maLoai;
+        this.tenLoai = tenLoai;
+    }
+
+    public LoaiMonAnDTO() {
+    }
+
+    public String getMaLoai() {
         return maLoai;
     }
 
-    public void setMaLoai(int maLoai) {
+    public void setMaLoai(String maLoai) {
         this.maLoai = maLoai;
     }
 
     public String getTenLoai() {
-        return TenLoai;
+        return tenLoai;
     }
 
     public void setTenLoai(String tenLoai) {
-        TenLoai = tenLoai;
+        this.tenLoai = tenLoai;
     }
 
     public String getHinhAnh() {

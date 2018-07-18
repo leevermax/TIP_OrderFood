@@ -45,7 +45,7 @@
             android:drawableLeft="@drawable/user"
             android:drawablePadding="@dimen/size5dp"
             android:singleLine="true"
-            android:text="thanh"/>
+            android:text="bathanh.tip@gmail.com"/>
 
         <EditText
             android:id="@+id/edMatKhauDN"
@@ -61,7 +61,7 @@
             android:drawablePadding="@dimen/size5dp"
             android:singleLine="true"
             android:password="true"
-            android:text="123"/>
+            android:text="123456"/>
 
         <Button
             android:id="@+id/btnDongYDN"

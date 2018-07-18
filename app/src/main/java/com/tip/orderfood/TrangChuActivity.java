@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -16,8 +17,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.tip.orderfood.DAO.NhanVienDAO;
 import com.tip.orderfood.FragmentApp.HienThiBanAnFragment;
+import com.tip.orderfood.FragmentApp.HienThiNhanVienFragment;
 import com.tip.orderfood.FragmentApp.HienThiThucDonFragment;
 
 public class TrangChuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -26,13 +34,16 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
     android.support.v7.widget.Toolbar toolbar;
     TextView txtTenNhanVien_navigation;
     FragmentManager fragmentManager;
-    int lever = 5; String Uid = "";
+    String Uid;
+    String emailHT,matKhauHT;
+    NhanVienDAO nhanVienDAO;
+    Menu menuNav;
     FirebaseDatabase database;
+    FirebaseUser user;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_trangchu);
-        database = FirebaseDatabase.getInstance();
         addControls();
         addEvents();
     }
@@ -45,10 +56,19 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
         View view = navigationView.inflateHeaderView(R.layout.layout_header_navigation_trangchu);
         txtTenNhanVien_navigation = view.findViewById(R.id.txtTenNhanVien_navigation);
 
-        Menu menuNav=navigationView.getMenu();
+        nhanVienDAO = new NhanVienDAO(this);
+
+
+
+        database = FirebaseDatabase.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        menuNav = navigationView.getMenu();
         MenuItem nav_itemDangNhap = menuNav.findItem(R.id.iDangNhap);
         MenuItem nav_itemDaXnguat = menuNav.findItem(R.id.iDangXuat);
-        if (Uid != ""){
+
+        if (user != null){
             nav_itemDangNhap.setVisible(false);
             nav_itemDaXnguat.setVisible(true);
         } else {
@@ -75,20 +95,57 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
         drawerToggle.syncState();
 
 
+        if (user != null){
+            Uid = user.getUid().toString();
+            nhanVienDAO.getNameUser(Uid).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot != null){
+                        txtTenNhanVien_navigation.setText(dataSnapshot.getValue().toString());
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        } else {
+            txtTenNhanVien_navigation.setText(getResources().getString(R.string.khachhang));
+        }
 
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
 
         Intent intent = getIntent();
-        String tendn = intent.getStringExtra("tendn");
-
-        txtTenNhanVien_navigation.setText(tendn);
+        emailHT = intent.getStringExtra("emailHT");
+        matKhauHT = intent.getStringExtra("matKhauHT");
+        int k = intent.getIntExtra("keyThemNV",0);
 
         fragmentManager = getSupportFragmentManager();
-        FragmentTransaction tranHienThiBanAn = fragmentManager.beginTransaction();
-        HienThiBanAnFragment hienThiBanAnFragment = new HienThiBanAnFragment();
-        tranHienThiBanAn.replace(R.id.content,hienThiBanAnFragment);
-        tranHienThiBanAn.commit();
+        if (k != 0){
+
+
+            HienThiNhanVienFragment hienThiNhanVienFragment = new HienThiNhanVienFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("emailHT",emailHT);
+            bundle.putString("matKhauHT",matKhauHT);
+            hienThiNhanVienFragment.setArguments(bundle);
+
+            FragmentTransaction tranNhanVien = fragmentManager.beginTransaction();
+            tranNhanVien.replace(R.id.content,hienThiNhanVienFragment).addToBackStack("trangchu");
+            tranNhanVien.commit();
+
+            MenuItem nav_itemNhanVien = menuNav.findItem(R.id.itNhanVien);
+            nav_itemNhanVien.isChecked();
+        }else {
+            FragmentTransaction tranHienThiBanAn = fragmentManager.beginTransaction();
+            HienThiBanAnFragment hienThiBanAnFragment = new HienThiBanAnFragment();
+            tranHienThiBanAn.replace(R.id.content,hienThiBanAnFragment);
+            tranHienThiBanAn.commit();
+        }
+
+
     }
 
     @Override
@@ -105,11 +162,36 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
                 item.setChecked(true);
                 drawerLayout.closeDrawers();
                 break;
+            case R.id.itNhanVien:
+                showNhanVien();
+                item.setChecked(true);
+                drawerLayout.closeDrawers();
+                break;
             case R.id.iDangNhap:
                 Intent iDangNhap = new Intent(TrangChuActivity.this,DangNhapActivity.class);
                 startActivity(iDangNhap);
+                break;
+            case R.id.iDangXuat:
+                FirebaseAuth.getInstance().signOut();
+                drawerLayout.closeDrawers();
+                Intent iTrangChu = new Intent(TrangChuActivity.this,TrangChuActivity.class);
+                startActivity(iTrangChu);
+                break;
+
         }
         return false;
+    }
+
+    private void showNhanVien() {
+        HienThiNhanVienFragment hienThiNhanVienFragment = new HienThiNhanVienFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("emailHT",emailHT);
+        bundle.putString("matKhauHT",matKhauHT);
+        hienThiNhanVienFragment.setArguments(bundle);
+
+        FragmentTransaction tranNhanVien = fragmentManager.beginTransaction();
+        tranNhanVien.replace(R.id.content,hienThiNhanVienFragment).addToBackStack("trangchu");
+        tranNhanVien.commit();
     }
 
     private void showBanAn() {
@@ -122,7 +204,7 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
     private void showThucDon() {
         FragmentTransaction tranHienThiThucDon = fragmentManager.beginTransaction();
         HienThiThucDonFragment hienThiThucDonFragment = new HienThiThucDonFragment();
-        tranHienThiThucDon.replace(R.id.content,hienThiThucDonFragment);
+        tranHienThiThucDon.replace(R.id.content,hienThiThucDonFragment).addToBackStack("trangchu");
         tranHienThiThucDon.commit();
     }
 }

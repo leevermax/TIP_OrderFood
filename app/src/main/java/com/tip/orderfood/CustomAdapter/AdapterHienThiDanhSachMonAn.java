@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.tip.orderfood.DTO.MonAnDTO;
 import com.tip.orderfood.R;
 
@@ -33,12 +34,12 @@ public class AdapterHienThiDanhSachMonAn extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return monAnDTOList.get(position);
+        return position;
     }
 
     @Override
     public long getItemId(int position) {
-        return monAnDTOList.get(position).getMaMonAn();
+        return position;
     }
 
     public class ViewHolderHienThiDanhSachMonAn{
@@ -69,8 +70,9 @@ public class AdapterHienThiDanhSachMonAn extends BaseAdapter {
         if(hinhanh == null || hinhanh.equals("")){
             viewHolderHienThiDanhSachMonAn.imHinhMonAn.setImageResource(R.drawable.backgroundheader1);
         }else{
-            Uri uri = Uri.parse(hinhanh);
-            viewHolderHienThiDanhSachMonAn.imHinhMonAn.setImageURI(uri);
+//            Uri uri = Uri.parse(hinhanh);
+//            viewHolderHienThiDanhSachMonAn.imHinhMonAn.setImageURI(uri);
+            Picasso.get().load(hinhanh).into(viewHolderHienThiDanhSachMonAn.imHinhMonAn);
         }
 
         viewHolderHienThiDanhSachMonAn.txtTenMonAn.setText(monAnDTO.getTenMonAn());

@@ -15,18 +15,22 @@
             android:icon="@drawable/monanicon"
             />
         <item
+            android:id="@+id/itNhaBep"
             android:title="@string/nhabep"
             android:icon="@drawable/logodangnhap"
             />
         <item
+            android:id="@+id/itNhanVien"
             android:title="@string/nhanvien"
             android:icon="@drawable/nhanvien"
             />
         <item
+            android:id="@+id/itThongKe"
             android:title="@string/thongke"
             android:icon="@drawable/thongke"
             />
         <item
+            android:id="@+id/itCaiDat"
             android:title="@string/caidat"
             android:icon="@drawable/caidat"
             />

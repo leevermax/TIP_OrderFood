@@ -1,38 +1,40 @@
 package com.tip.orderfood.DTO;
 
 public class GoiMonDTO {
-    int maGoiMon,maBan,maNv;
-    String tinhTrang,ngayGoi;
+    String maGoiMon, maNhanVien;
+    String ngayGoi, maBan;
+    boolean tinhTrang;
 
-    public int getMaGoiMon() {
+    public String getMaGoiMon() {
         return maGoiMon;
     }
 
-    public void setMaGoiMon(int maGoiMon) {
+    public void setMaGoiMon(String maGoiMon) {
         this.maGoiMon = maGoiMon;
     }
 
-    public int getMaBan() {
+    public String getMaNhanVien() {
+        return maNhanVien;
+    }
+
+    public void setMaNhanVien(String maNhanVien) {
+        this.maNhanVien = maNhanVien;
+    }
+
+    public String getMaBan() {
         return maBan;
     }
 
-    public void setMaBan(int maBan) {
+    public void setMaBan(String maBan) {
         this.maBan = maBan;
     }
 
-    public int getMaNv() {
-        return maNv;
-    }
 
-    public void setMaNv(int maNv) {
-        this.maNv = maNv;
-    }
-
-    public String getTinhTrang() {
+    public boolean getTinhTrang() {
         return tinhTrang;
     }
 
-    public void setTinhTrang(String tinhTang) {
+    public void setTinhTrang(boolean tinhTang) {
         this.tinhTrang = tinhTang;
     }
 

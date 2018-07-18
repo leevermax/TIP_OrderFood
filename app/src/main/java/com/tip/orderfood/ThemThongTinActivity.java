@@ -4,33 +4,48 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.tip.orderfood.CustomAdapter.AdapterQuyen;
 import com.tip.orderfood.DAO.NhanVienDAO;
+import com.tip.orderfood.DAO.QuyenDAO;
 import com.tip.orderfood.DTO.NhanVienDTO;
+import com.tip.orderfood.DTO.QuyenDTO;
 import com.tip.orderfood.FragmentApp.DatePickerFragment;
+import com.tip.orderfood.Support.SuaDuLieu;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ThemThongTinActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener{
-    EditText edHoTenDK, edMatKhauDK, edNgaySinhDK,edCMNDDK;
-    Button btnDongYDK, btnThoatDK;
+    EditText edHoTenDK, edNgaySinhDK,edCMNDDK,edSoDienThoaiDK;
+    Button btnDongYDK;
     RadioGroup rgGioiTinh;
+    Spinner spinQuyen;
+
+    QuyenDAO quyenDAO;
+    List<QuyenDTO> quyenDTOS;
+    AdapterQuyen adapterQuyen;
     String sGioiTinh;
     RadioButton rdNam,rdNu;
-    String UIDnv = "";
-    DatabaseReference root;
+    String UIDnv,email,matKhauHT,emailHT;
     NhanVienDAO nhanVienDAO;
+
+    FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,21 +57,50 @@ public class ThemThongTinActivity extends AppCompatActivity implements View.OnCl
 
     private void addControls() {
         edHoTenDK = findViewById(R.id.edHoTenDK);
-        edMatKhauDK = findViewById(R.id.edMatKhauDK);
         edNgaySinhDK = findViewById(R.id.edNgaySinhDK);
+        edSoDienThoaiDK = findViewById(R.id.edSoDienThoaiDK);
         edCMNDDK = findViewById(R.id.edCMNDDK);
         btnDongYDK = findViewById(R.id.btnDongYDK);
-        btnThoatDK = findViewById(R.id.btnThoatDK);
         rgGioiTinh = findViewById(R.id.rgGioiTinh);
+        spinQuyen = findViewById(R.id.spinQuyen);
+
+        quyenDAO = new QuyenDAO(this);
+        quyenDTOS = new ArrayList<>();
+
         nhanVienDAO = new NhanVienDAO(this);
-        root = FirebaseDatabase.getInstance().getReference();
+
+        mAuth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
-        UIDnv = intent.getStringExtra("UIDNhanVien");
+        UIDnv = intent.getStringExtra("idnv");
+        email = intent.getStringExtra("email");
+        emailHT = intent.getStringExtra("emailHT");
+        matKhauHT = intent.getStringExtra("matKhauHT");
     }
 
     private void addEvents() {
-        btnThoatDK.setOnClickListener(this);
+
+        adapterQuyen = new AdapterQuyen(ThemThongTinActivity.this,R.layout .custom_layout_spinloaithucdon,quyenDTOS);
+        spinQuyen.setAdapter(adapterQuyen);
+
+        quyenDAO.layDanhSachQuyen().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                quyenDTOS.clear();
+                for (DataSnapshot d: dataSnapshot.getChildren()){
+                    QuyenDTO quyenDTO = d.getValue(QuyenDTO.class);
+                    quyenDTO.setMaQuyen(d.getKey().toString());
+                    quyenDTOS.add(quyenDTO);
+                }
+                adapterQuyen.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         btnDongYDK.setOnClickListener(this);
         edNgaySinhDK.setOnFocusChangeListener(this);
     }
@@ -67,9 +111,9 @@ public class ThemThongTinActivity extends AppCompatActivity implements View.OnCl
         switch (id){
             case R.id.btnDongYDK:
                 themNV();
+                dangNhapLai();
                 break;
-            case  R.id.btnThoatDK:
-                finish(); break;
+
         }
     }
 
@@ -87,7 +131,15 @@ public class ThemThongTinActivity extends AppCompatActivity implements View.OnCl
     }
     public void  themNV(){
         String sHoTen = edHoTenDK.getText().toString();
-        String sMatKhau = edMatKhauDK.getText().toString();
+        SuaDuLieu suaDuLieu = new SuaDuLieu();
+        sHoTen = suaDuLieu.toiUuChuoi(sHoTen);
+
+
+        int vTri = spinQuyen.getSelectedItemPosition();
+        String quyen = quyenDTOS.get(vTri).getMaQuyen();
+
+
+
         switch (rgGioiTinh.getCheckedRadioButtonId()){
             case R.id.rdNam:
                 sGioiTinh = "Nam";
@@ -97,30 +149,39 @@ public class ThemThongTinActivity extends AppCompatActivity implements View.OnCl
                 sGioiTinh = "Nữ";
                 break;
         }
+        String sPhone =  edSoDienThoaiDK.getText().toString();
         String sNgaySinh = edNgaySinhDK.getText().toString();
-        int sCMND = Integer.parseInt(edCMNDDK.getText().toString());
+        String sCMND = edCMNDDK.getText().toString();
 
         if(sHoTen == null || sHoTen.equals("")){
             Toast.makeText(ThemThongTinActivity.this,getResources().getString(R.string.loinhaptendangnhap), Toast.LENGTH_SHORT).show();
-        }else if(UIDnv == null || UIDnv.equals("")){
-            Toast.makeText(ThemThongTinActivity.this,getResources().getString(R.string.themthatbai), Toast.LENGTH_SHORT).show();
         }else {
 
-            NhanVienDTO nhanVienDTO = new NhanVienDTO();
-            nhanVienDTO.setHoTen(sHoTen);
-            nhanVienDTO.setMatKhau(sMatKhau);
-            nhanVienDTO.setCMND(sCMND);
-            nhanVienDTO.setNgaySinh(sNgaySinh);
-            nhanVienDTO.setGioiTinh(sGioiTinh);
-            nhanVienDTO.setIdUser(UIDnv);
-            long kiemtra = nhanVienDAO.themNV(nhanVienDTO);
-            nhanVienDAO.addNV(nhanVienDTO);
-            if(kiemtra != 0){
-                Toast.makeText(ThemThongTinActivity.this,getResources().getString(R.string.themthanhcong), Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(ThemThongTinActivity.this,getResources().getString(R.string.themthatbai), Toast.LENGTH_SHORT).show();
-            }
+            NhanVienDTO nhanVienDTO = new NhanVienDTO(quyen,email,sCMND,sHoTen,sGioiTinh,sNgaySinh,sPhone);
+
+            nhanVienDAO.addNV(UIDnv,nhanVienDTO);
         }
+
+
+    }
+    private void dangNhapLai(){
+        mAuth.signInWithEmailAndPassword(emailHT, matKhauHT)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Intent iTrangChu = new Intent(ThemThongTinActivity.this,TrangChuActivity.class);
+                            iTrangChu.putExtra("emailHT",emailHT);
+                            iTrangChu.putExtra("matKhauHT",matKhauHT);
+                            iTrangChu.putExtra("keyThemNV",1);
+                            startActivity(iTrangChu);
+                        } else {
+
+                        }
+
+                        // ...
+                    }
+                });
 
     }
 

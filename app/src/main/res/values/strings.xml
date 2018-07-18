@@ -2,7 +2,9 @@
     <string name="app_name">OrderFood</string>
     <string name="tendangnhap">Tên đăng nhập</string>
     <string name="nhapmatkhau">Mật khẩu</string>
+    <string name="matkhaunhaplai">Mật Khẩu Nhập Lại</string>
     <string name="ngaysinh">Ngày sinh</string>
+    <string name="sodienthoai">Số Điện Thoại</string>
     <string name="gtNam">Nam</string>
     <string name="gtNu">Nữ</string>
     <string name="chungminhandan">Chứng minh nhân dân</string>
@@ -33,6 +35,7 @@
     <string name="gia">Giá : </string>
     <string name="soluong">Số lượng</string>
     <string name="thanhtoan">Thanh toán</string>
+    <string name="xacnhanthanhtoan">Xác Nhận Thanh toán</string>
     <string name="tongcong">Tổng cộng : </string>
     <string name="thanhtoanthanhcong">Thanh toán thành công !</string>
     <string name="loi">Lỗi !</string>
@@ -45,12 +48,22 @@
     <string name="xinchao">Xin Chào!</string>
     <string name="khachhang">Khách Hàng</string>
     <string name="nhabep">Nhà Bếp</string>
+    <string name="quanly">Quản Lý</string>
     <string name="Quanly">Quản Lý</string>
     <string name="nhanvien">Nhân viên</string>
     <string name="dangxuat">Đăng Xuất</string>
     <string name="email">Email</string>
     <string name="hoten">Họ Và Tên</string>
     <string name="themthongtin">Thêm Thông Tin</string>
-
-
+    <string name="phucvu">Phục Vụ</string>
+    <string name="matkhaukhongtrung">Mật Khẩu Không Trùng Khớp</string>
+    <string name="emailempty">Không Được Bỏ Trống Email</string>
+    <string name="dangnhapthatbai">Đăng Nhập Thất Bại</string>
+    <string name="quyen">Quyền:</string>
+    <string name="goimon">Thêm Gọi Món Thành Công</string>
+    <string name="tongtien">Tổng Tiền</string>
+    <string name="khongcoquyenthanhtoan">Không Có Quyền Thanh Toán</string>
+    <string name="yeucauthanhtoan">Đăng Nhập Hoặc Yêu Cầu Nhân Viên Thanh Toán</string>
+    <string name="bantrong">Bàn Trống!</string>
+    <string name="thongbaoxacnhanthanhtoan">Thanh Toán Cho </string>
 </resources>

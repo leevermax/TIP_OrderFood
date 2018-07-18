@@ -2,6 +2,7 @@ package com.tip.orderfood.CustomAdapter;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 import com.tip.orderfood.DAO.LoaiMonAnDAO;
 import com.tip.orderfood.DTO.LoaiMonAnDTO;
+import com.tip.orderfood.DTO.MonAnDTO;
 import com.tip.orderfood.R;
 
 import java.util.List;
@@ -27,6 +33,7 @@ public class AdapterHienThiLoaiMonAnThucDon extends BaseAdapter {
         this.layout = layout;
         this.loaiMonAnDTOList = loaiMonAnDTOList;
         loaiMonAnDAO = new LoaiMonAnDAO(context);
+
     }
 
     @Override
@@ -41,7 +48,7 @@ public class AdapterHienThiLoaiMonAnThucDon extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return loaiMonAnDTOList.get(position).getMaLoai();
+        return position;
     }
 
     public class ViewHolderHienThiLoaiThucDon{
@@ -66,12 +73,19 @@ public class AdapterHienThiLoaiMonAnThucDon extends BaseAdapter {
         }
 
         LoaiMonAnDTO loaiMonAnDTO = loaiMonAnDTOList.get(position);
-        int maloai = loaiMonAnDTO.getMaLoai();
-        String hinhanh = loaiMonAnDAO.layHinhLoaiMonAn(maloai);
 
-        Uri uri = Uri.parse(hinhanh);
         viewHolderHienThiLoaiThucDon.txtTenLoaiThucDon.setText(loaiMonAnDTO.getTenLoai());
-        viewHolderHienThiLoaiThucDon.imHinhLoaiThucDon.setImageURI(uri);
+
+        final String maLoai = loaiMonAnDTO.getMaLoai();
+        loaiMonAnDAO.layHinhLoaiMonAn(maLoai);
+
+        Picasso.get().load(loaiMonAnDTO.getHinhAnh()).into(viewHolderHienThiLoaiThucDon.imHinhLoaiThucDon);
+
+
+
+
+
+//        Picasso.get().load("http://media.phunutoday.vn/files/upload_images/2016/05/25/cach-lam-ga-hap-hanh-ngon-1-phunutoday_vn.jpg").into(viewHolderHienThiLoaiThucDon.imHinhLoaiThucDon);
 
         return view;
     }

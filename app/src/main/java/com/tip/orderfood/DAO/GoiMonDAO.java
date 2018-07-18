@@ -4,105 +4,45 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.tip.orderfood.DTO.ChiTietGoiMonDTO;
 import com.tip.orderfood.DTO.GoiMonDTO;
 import com.tip.orderfood.Database.CreateDatabase;
+import com.tip.orderfood.R;
 
 public class GoiMonDAO {
 
-    SQLiteDatabase database;
+    DatabaseReference root = FirebaseDatabase.getInstance().getReference().child("GoiMon");
+    Context context;
     public  GoiMonDAO(Context context){
-///
-        CreateDatabase createDatabase = new CreateDatabase(context);
-        database = createDatabase.open();
-    }
-
-    public long themGoiMon(GoiMonDTO goiMonDTO){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(CreateDatabase.TB_GOIMON_maBan,goiMonDTO.getMaBan());
-        contentValues.put(CreateDatabase.TB_GOIMON_maNV,goiMonDTO.getMaNv());
-        contentValues.put(CreateDatabase.TB_GOIMON_ngayGoi,goiMonDTO.getNgayGoi());
-        contentValues.put(CreateDatabase.TB_GOIMON_tinhTrang, goiMonDTO.getTinhTrang());
-
-        long magoimon = database.insert(CreateDatabase.TB_GOIMON,null,contentValues);
-
-        return magoimon;
+        this.context = context;
 
     }
 
-    public long layMaGoiMonTheoMaBan(int maBan, String tinhTrang){
-        long maGoiMon = 0;
-
-        String truyVan = " SELECT * FROM " + CreateDatabase.TB_GOIMON + " WHERE " + CreateDatabase.TB_GOIMON_maBan + " = '" + maBan + "' AND "
-                + CreateDatabase.TB_GOIMON_tinhTrang + " = '" + tinhTrang + "'";
-
-
-        Cursor cursor = database.rawQuery(truyVan,null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()){
-            maGoiMon = cursor.getLong(cursor.getColumnIndex(CreateDatabase.TB_GOIMON_maGoiMon));
-
-            cursor.moveToNext();
-        }
-
-        return maGoiMon;
-
+    public String themGoiMon(GoiMonDTO goiMonDTO){
+        String key = root.push().getKey().toString();
+        root.child(key).setValue(goiMonDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, R.string.goimon, Toast.LENGTH_SHORT).show();
+            }
+        });
+        return key;
     }
 
-    public boolean kTraMonAn(int maGoiMon, int maMonAn){
-        String truyvan = "SELECT * FROM " + CreateDatabase.TB_CHITIETGOIMON + " WHERE " + CreateDatabase.TB_CHITIETGOIMON_maMonAn
-                + " = " + maMonAn + " AND " + CreateDatabase.TB_CHITIETGOIMON_maGoiMon + " = " + maGoiMon;
 
-        Cursor cursor = database.rawQuery(truyvan,null);
-        if(cursor.getCount() != 0){
-            return true;
-        }else{
-            return false;
-        }
+
+    public void themCTGoiMon(ChiTietGoiMonDTO chiTietGoiMonDTO){
+        FirebaseDatabase.getInstance().getReference().child("ChiTietGoiMon").push().setValue(chiTietGoiMonDTO);
     }
 
-    public int laySoLuongMonAn(int maGoiMon, int maMonAn){
-        int soluong = 0;
-        String truyvan = "SELECT * FROM " + CreateDatabase.TB_CHITIETGOIMON + " WHERE " + CreateDatabase.TB_CHITIETGOIMON_maMonAn
-                + " = " + maMonAn + " AND " + CreateDatabase.TB_CHITIETGOIMON_maGoiMon + " = " + maGoiMon;
-        Cursor cursor = database.rawQuery(truyvan,null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()){
-            soluong = cursor.getInt(cursor.getColumnIndex(CreateDatabase.TB_CHITIETGOIMON_soLuong));
-
-            cursor.moveToNext();
-        }
-
-        return soluong;
-    }
-
-    public  boolean capNhapSoLuong(ChiTietGoiMonDTO chiTietGoiMonDTO){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(CreateDatabase.TB_CHITIETGOIMON_soLuong, chiTietGoiMonDTO.getSoLuong());
-
-        long kiemtra = database.update(CreateDatabase.TB_CHITIETGOIMON,contentValues,CreateDatabase.TB_CHITIETGOIMON_maGoiMon + " = " + chiTietGoiMonDTO.getMaGoiMon()
-                + " AND " + CreateDatabase.TB_CHITIETGOIMON_maMonAn + " = " + chiTietGoiMonDTO.getMaMonAn(),null );
-
-        if (kiemtra != 0){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    public boolean themCTGoiMon(ChiTietGoiMonDTO chiTietGoiMonDTO){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(CreateDatabase.TB_CHITIETGOIMON_soLuong,chiTietGoiMonDTO.getSoLuong());
-        contentValues.put(CreateDatabase.TB_CHITIETGOIMON_maGoiMon, chiTietGoiMonDTO.getMaGoiMon());
-        contentValues.put(CreateDatabase.TB_CHITIETGOIMON_maMonAn,chiTietGoiMonDTO.getMaMonAn());
-
-        long kiemtra = database.insert(CreateDatabase.TB_CHITIETGOIMON, null, contentValues);
-
-        if (kiemtra != 0){
-            return true;
-        }else{
-            return false;
-        }
+    public Query layMaGoiMonTheoBan(String maBan){
+        Query query = root.orderByChild("maBan").equalTo(maBan);
+        return query;
     }
 }

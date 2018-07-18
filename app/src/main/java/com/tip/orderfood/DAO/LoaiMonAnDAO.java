@@ -4,62 +4,84 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.tip.orderfood.DTO.LoaiMonAnDTO;
+import com.tip.orderfood.DTO.MonAnDTO;
 import com.tip.orderfood.Database.CreateDatabase;
+import com.tip.orderfood.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LoaiMonAnDAO {
-    SQLiteDatabase database;
+    DatabaseReference root = FirebaseDatabase.getInstance().getReference().child("loai");
+    Context context;
     public  LoaiMonAnDAO(Context context){
-        CreateDatabase createDatabase = new CreateDatabase(context);
-        database = createDatabase.open();
+        this.context = context;
     }
 
-    public boolean themLoaiMonAn(String tenLoai){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(CreateDatabase.TB_LOAIMONAN_tenLoai,tenLoai);
+    public boolean themLoaiMonAn(LoaiMonAnDTO loaiMonAnDTO){
 
-        long kTra = database.insert(CreateDatabase.TB_LOAIMONAN,null,contentValues);
-
-        if (kTra !=0){
-            return true;
-        } else {
-            return false;
-        }
+        root.push().setValue(loaiMonAnDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, R.string.themthanhcong, Toast.LENGTH_SHORT).show();
+            }
+        });
+        return true;
     }
 
-    public List<LoaiMonAnDTO> layDanhSachLoaiMonAn(){
-        List<LoaiMonAnDTO> loaiMonAnDTOS = new ArrayList<LoaiMonAnDTO>();
+    public Query layDanhSachLoaiMonAn(){
 
-        String truyVan = "SELECT * FROM " + CreateDatabase.TB_LOAIMONAN;
-        Cursor cursor = database.rawQuery(truyVan,null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()){
-            LoaiMonAnDTO loaiMonAnDTO = new LoaiMonAnDTO();
-            loaiMonAnDTO.setMaLoai(cursor.getInt(cursor.getColumnIndex(CreateDatabase.TB_LOAIMONAN_maLoai)));
-            loaiMonAnDTO.setTenLoai(cursor.getString(cursor.getColumnIndex(CreateDatabase.TB_LOAIMONAN_tenLoai)));
-
-            loaiMonAnDTOS.add(loaiMonAnDTO);
-            cursor.moveToNext();
-        }
-
-        return loaiMonAnDTOS;
+        Query query = root;
+        return query;
     }
 
-    public String layHinhLoaiMonAn(int maloai){
-        String hinhanh = "";
-        String truyvan = "SELECT * FROM " + CreateDatabase.TB_MONAN + " WHERE " + CreateDatabase.TB_MONAN_maLoai + " = '" + maloai + "' "
-                + " AND " + CreateDatabase.TB_MONAN_hinhAnh + " != '' ORDER BY " + CreateDatabase.TB_MONAN_maMon + " LIMIT 1";
-        Cursor cursor = database.rawQuery(truyvan,null);
-        cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
-            hinhanh = cursor.getString(cursor.getColumnIndex(CreateDatabase.TB_MONAN_hinhAnh));
-            cursor.moveToNext();
-        }
+    public void layHinhLoaiMonAn(String maLoai){
 
-        return hinhanh;
+        final String ma = maLoai;
+        root.child(maLoai).child("hinhAnh").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String hinh = dataSnapshot.getValue().toString();
+                if (hinh.equals("null")){
+                    FirebaseDatabase.getInstance().getReference().child("MonAn").orderByChild("maLoai").equalTo(ma).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String hinhAnh ="";
+
+                            for (DataSnapshot d: dataSnapshot.getChildren()){
+                                MonAnDTO monAnDTO = d.getValue(MonAnDTO.class);
+                                hinhAnh = monAnDTO.getHinhAnh();
+                                break;
+
+                            }
+                            if (!hinhAnh.equals("")){
+                                root.child(ma).child("hinhAnh").setValue(hinhAnh);
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 }

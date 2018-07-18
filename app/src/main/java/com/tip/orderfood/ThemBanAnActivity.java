@@ -9,12 +9,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.tip.orderfood.DAO.BanAnDAO;
+import com.tip.orderfood.DTO.BanAnDTO;
+import com.tip.orderfood.Support.SuaDuLieu;
 
 public class ThemBanAnActivity extends AppCompatActivity implements View.OnClickListener{
     EditText edThemTenBanAn;
     Button btnDongYThemBanAn;
     BanAnDAO banAnDAO;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +33,8 @@ public class ThemBanAnActivity extends AppCompatActivity implements View.OnClick
         edThemTenBanAn = findViewById(R.id.edThemTenBanAn);
         btnDongYThemBanAn = findViewById(R.id.btnDongYThemBanAn);
         banAnDAO = new BanAnDAO(this);
+
+
     }
 
     private void addEvent() {
@@ -37,10 +44,13 @@ public class ThemBanAnActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         String sTenBanAn = edThemTenBanAn.getText().toString();
-        if(sTenBanAn != null || sTenBanAn.equals("")){
-            boolean kTra = banAnDAO.themBanAn(sTenBanAn);
+        SuaDuLieu suaDuLieu = new SuaDuLieu();
+        sTenBanAn = suaDuLieu.toiUuChuoi(sTenBanAn);
+        BanAnDTO banAnDTO = new BanAnDTO(sTenBanAn,false);
+        if(sTenBanAn != null && !sTenBanAn.equals("")){
+            banAnDAO.themBanAn(banAnDTO);
             Intent intent = new Intent();
-            intent.putExtra("ketQuaThem",kTra);
+            intent.putExtra("ketQuaThem",true);
             setResult(Activity.RESULT_OK,intent);
             finish();
         }

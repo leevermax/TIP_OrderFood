@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,13 +16,20 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.tip.orderfood.CustomAdapter.AdapterHienThiBanAn;
 import com.tip.orderfood.DAO.BanAnDAO;
+import com.tip.orderfood.DAO.NhanVienDAO;
 import com.tip.orderfood.DTO.BanAnDTO;
 import com.tip.orderfood.R;
 import com.tip.orderfood.ThemBanAnActivity;
 import com.tip.orderfood.TrangChuActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HienThiBanAnFragment extends Fragment {
@@ -29,17 +37,25 @@ public class HienThiBanAnFragment extends Fragment {
     GridView gvHienThiBanAn;
     List<BanAnDTO> banAnDTOList;
     BanAnDAO banAnDAO;
+    NhanVienDAO nhanVienDAO;
     AdapterHienThiBanAn adapterHienThiBanAn;
+    String Uid;
+    FirebaseUser user;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_hienthibanan,container,false);
         ((TrangChuActivity)getActivity()).getSupportActionBar().setTitle(R.string.trangchu);
+
+
+
         setHasOptionsMenu(true);
 
         gvHienThiBanAn = view.findViewById(R.id.gvHienBanAn);
         banAnDAO = new BanAnDAO(getActivity());
+        nhanVienDAO = new NhanVienDAO(getActivity());
+        user = FirebaseAuth.getInstance().getCurrentUser();
         hienThiDanhSachBanAn();
         return view;
     }
@@ -47,13 +63,28 @@ public class HienThiBanAnFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        int k=1;
-        if (k != 1){
-            MenuItem itThemBanAn = menu.add(1,R.id.itThemBanAn,1,R.string.thembanan);
-            itThemBanAn.setIcon(R.drawable.thembanan);
-            itThemBanAn.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        final Menu menuOnFire =  menu;
 
+        if (user != null){
+            Uid = user.getUid().toString();
+            nhanVienDAO.kiemTraQuyen(Uid).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    int role = Integer.parseInt(dataSnapshot.getValue().toString());
+                    if(role == 1 || role == 3){
+                        MenuItem itThemBanAn = menuOnFire.add(1,R.id.itThemBanAn,1,R.string.thembanan);
+                        itThemBanAn.setIcon(R.drawable.thembanan);
+                        itThemBanAn.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
+
     }
 
     @Override
@@ -70,11 +101,28 @@ public class HienThiBanAnFragment extends Fragment {
     }
 
     private void hienThiDanhSachBanAn(){
-        banAnDTOList = banAnDAO.layTatCaBanAn();
+        banAnDTOList = new ArrayList<>();
+
 
         adapterHienThiBanAn = new AdapterHienThiBanAn(getActivity(),R.layout.custom_layout_hienthibanan,banAnDTOList);
         gvHienThiBanAn.setAdapter(adapterHienThiBanAn);
-        adapterHienThiBanAn.notifyDataSetChanged();
+        banAnDAO.getlistban().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                banAnDTOList.clear();
+                for(DataSnapshot d: dataSnapshot.getChildren()){
+                    BanAnDTO banAnDTO = d.getValue(BanAnDTO.class);
+                    banAnDTO.setMaBan(d.getKey().toString());
+                    banAnDTOList.add(banAnDTO);
+                }
+                adapterHienThiBanAn.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
