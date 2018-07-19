@@ -64,7 +64,7 @@ public class XacNhanThanhToanActivity extends AppCompatActivity implements View.
     @Override
     public void onClick(View v) {
         final String UID = user.getUid().toString();
-        root.child("GoiMon").orderByChild("maBan").equalTo(maBan).addValueEventListener(new ValueEventListener() {
+        root.child("GoiMon").orderByChild("maBan").equalTo(maBan).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String maGoiMon = "";
@@ -78,9 +78,6 @@ public class XacNhanThanhToanActivity extends AppCompatActivity implements View.
 
                 root.child("GoiMon").child(maGoiMon).child("tinhTrang").setValue(true);
                 root.child("GoiMon").child(maGoiMon).child("maNhanVien").setValue(UID);
-
-
-
             }
 
             @Override

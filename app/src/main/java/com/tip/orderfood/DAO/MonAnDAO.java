@@ -51,7 +51,7 @@ public class MonAnDAO {
     public void tangDiemMonAn(String maMonAn, int soLuong){
         final  int sl = soLuong;
         final String m = maMonAn;
-        root.child(maMonAn).child("lanGoi").addValueEventListener(new ValueEventListener() {
+        root.child(maMonAn).child("lanGoi").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int count = dataSnapshot.getValue(Integer.class) + sl;

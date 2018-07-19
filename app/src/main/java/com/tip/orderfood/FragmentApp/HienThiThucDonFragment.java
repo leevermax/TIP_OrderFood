@@ -87,7 +87,6 @@ public class HienThiThucDonFragment extends android.support.v4.app.Fragment {
 
         Bundle bDuLieuThucDon = getArguments();
 
-
         if (bDuLieuThucDon != null){
             maBan = bDuLieuThucDon.getString("maBan");
             maGoiMon = bDuLieuThucDon.getString("maGoiMon");

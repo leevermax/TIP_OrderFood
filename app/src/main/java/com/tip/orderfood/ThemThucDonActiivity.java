@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.tip.orderfood.CustomAdapter.AdapterHienThiLoaiMonAn;
 import com.tip.orderfood.DAO.LoaiMonAnDAO;
@@ -65,6 +67,8 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
     FirebaseStorage storage;
     StorageReference mountainResult;
     StorageReference  storageRef;
+    private StorageReference mStorageRef;
+    private StorageTask mUploadTask;
     Uri filePath;
     DatabaseReference root;
 
@@ -98,7 +102,7 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
 
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://orderfood-5d1b9.appspot.com");
-
+        mStorageRef = storage.getReference("ImageThucDon");
 
     }
 
@@ -160,8 +164,10 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
                 SuaDuLieu suaDuLieu = new SuaDuLieu();
                 tenmonan = suaDuLieu.toiUuChuoi(tenmonan);
                 int giatien = Integer.parseInt(edGiaTien.getText().toString());
+                if(tenmonan.length() == 0 || TextUtils.isEmpty(edGiaTien.getText().toString()) || tenmonan.equals("")){
+                    Toast.makeText(this,getResources().getString(R.string.loithemmonan),Toast.LENGTH_SHORT).show();
+                }else{
 
-                if(tenmonan != null && giatien > 0  && !tenmonan.equals("")  ){
                     MonAnDTO monAnDTO = new MonAnDTO();
                     monAnDTO.setGiaTien(giatien);
                     monAnDTO.setHinhAnh("");
@@ -173,12 +179,11 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
                     uploadImage(key);
                     if(key != null){
                         Toast.makeText(this,getResources().getString(R.string.themthanhcong),Toast.LENGTH_SHORT).show();
+                        finish();
                     }else{
                         Toast.makeText(this,getResources().getString(R.string.themthatbai),Toast.LENGTH_SHORT).show();
                     }
 
-                }else{
-                    Toast.makeText(this,getResources().getString(R.string.loithemmonan),Toast.LENGTH_SHORT).show();
                 }
 
                 break;
@@ -218,8 +223,44 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
     }
 
     private void uploadImage(final String key) {
-        Calendar calendar = Calendar.getInstance();
-        mountainResult = storageRef.child("image"+calendar.getTimeInMillis()+".png");
+
+        if (filePath != null) {
+            Calendar calendar = Calendar.getInstance();
+            StorageReference fileReference = storageRef.child("image" + calendar.getTimeInMillis() + ".png");
+
+            mUploadTask = fileReference.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+
+//                            Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_LONG).show();
+                            //ImageAccount upload = new ImageAccount("Quang Chien", taskSnapshot.getDownloadUrl().toString());
+                            String imgURL=taskSnapshot.getDownloadUrl().toString();
+
+
+
+//                            FirebaseDatabase.getInstance().getReference().child("User").child(uIdAccount).child("imgURL").setValue(imgURL);
+                            root.child("MonAn").child(key).child("hinhAnh").setValue(imgURL);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(ThemThucDonActiivity.this, R.string.loi + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(ThemThucDonActiivity.this, "No file selected", Toast.LENGTH_SHORT).show();
+        }
+//        Calendar calendar = Calendar.getInstance();
+//        mountainResult = storageRef.child("image"+calendar.getTimeInMillis()+".png");
 //        imHinhThucDon.setDrawingCacheEnabled(true);
 //        imHinhThucDon.buildDrawingCache();
 //        Bitmap bitmap =  imHinhThucDon.getDrawingCache();
@@ -242,23 +283,23 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
 //            }
 //        });
 
-
-        StorageReference riversRef = storageRef.child("images/"+filePath.getLastPathSegment());
-        UploadTask uploadTask = riversRef.putFile(filePath);
-
-        // Register observers to listen for when the download is done or if it fails
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-            }
-        });
+//
+//        StorageReference riversRef = storageRef.child("images/"+filePath.getLastPathSegment());
+//        UploadTask uploadTask = riversRef.putFile(filePath);
+//
+//        // Register observers to listen for when the download is done or if it fails
+//        uploadTask.addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception exception) {
+//                // Handle unsuccessful uploads
+//            }
+//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//            @Override
+//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+//                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//            }
+//        });
 
 
 

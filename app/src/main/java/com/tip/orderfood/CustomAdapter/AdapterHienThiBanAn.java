@@ -35,6 +35,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import okhttp3.internal.tls.CertificateChainCleaner;
+
 public class AdapterHienThiBanAn extends BaseAdapter implements View.OnClickListener{
 
     Context context;
@@ -171,7 +173,7 @@ public class AdapterHienThiBanAn extends BaseAdapter implements View.OnClickList
                 Calendar calendar = Calendar.getInstance();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
                 final String ngaygoi = dateFormat.format(calendar.getTime());
-                banAnDAO.layTinhTrangBanTheoMa(maBan).addValueEventListener(new ValueEventListener() {
+                banAnDAO.layTinhTrangBanTheoMa(maBan).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         final boolean tinhTrang = dataSnapshot.getValue(boolean.class);
@@ -198,7 +200,7 @@ public class AdapterHienThiBanAn extends BaseAdapter implements View.OnClickList
                             transactionThuDon.commit();
 
                         } else  {
-                            goiMonDAO.layMaGoiMonTheoBan(maBan).addValueEventListener(new ValueEventListener() {
+                            goiMonDAO.layMaGoiMonTheoBan(maBan).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     String maGoiMon = "";
@@ -237,7 +239,7 @@ public class AdapterHienThiBanAn extends BaseAdapter implements View.OnClickList
                 break;
 
             case R.id.imThanhToan:
-                banAnDAO.layTinhTrangBanTheoMa(maBan).addValueEventListener(new ValueEventListener() {
+                banAnDAO.layTinhTrangBanTheoMa(maBan).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         final boolean tinhTrang = dataSnapshot.getValue(boolean.class);
@@ -281,6 +283,8 @@ public class AdapterHienThiBanAn extends BaseAdapter implements View.OnClickList
             case R.id.imAnButton:
                 anButton(true);
                 break;
+
+
         }
 
     }
