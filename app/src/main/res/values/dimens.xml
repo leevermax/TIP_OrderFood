@@ -19,4 +19,6 @@
     <dimen name="size55dp">55dp</dimen>
     <dimen name="size15dp">15dp</dimen>
     <dimen name="size12sp">12sp</dimen>
+    <dimen name="size0dp">0dp</dimen>
+
 </resources>
