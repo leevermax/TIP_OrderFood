@@ -20,5 +20,6 @@
     <dimen name="size15dp">15dp</dimen>
     <dimen name="size12sp">12sp</dimen>
     <dimen name="size0dp">0dp</dimen>
+    <dimen name="size205dp">205dp</dimen>
 
 </resources>

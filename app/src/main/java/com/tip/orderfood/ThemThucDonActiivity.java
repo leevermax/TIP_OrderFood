@@ -233,14 +233,9 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-
-//                            Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_LONG).show();
-                            //ImageAccount upload = new ImageAccount("Quang Chien", taskSnapshot.getDownloadUrl().toString());
                             String imgURL=taskSnapshot.getDownloadUrl().toString();
 
 
-
-//                            FirebaseDatabase.getInstance().getReference().child("User").child(uIdAccount).child("imgURL").setValue(imgURL);
                             root.child("MonAn").child(key).child("hinhAnh").setValue(imgURL);
                         }
                     })
@@ -257,86 +252,9 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
                         }
                     });
         } else {
-            Toast.makeText(ThemThucDonActiivity.this, "No file selected", Toast.LENGTH_SHORT).show();
+//           Toast.makeText(ThemThucDonActiivity.this, "No file selected", Toast.LENGTH_SHORT).show();
         }
-//        Calendar calendar = Calendar.getInstance();
-//        mountainResult = storageRef.child("image"+calendar.getTimeInMillis()+".png");
-//        imHinhThucDon.setDrawingCacheEnabled(true);
-//        imHinhThucDon.buildDrawingCache();
-//        Bitmap bitmap =  imHinhThucDon.getDrawingCache();
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-//        byte[] data = baos.toByteArray();
-//
-//        UploadTask uploadTask = mountainResult.putBytes(data);
-//        uploadTask.addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception exception) {
-//                // Handle unsuccessful uploads
-//            }
-//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                Uri down = taskSnapshot.getDownloadUrl();
-//                root.child("MonAn").child(key).child("hinhAnh").setValue(String.valueOf(down));
-//
-//            }
-//        });
 
-//
-//        StorageReference riversRef = storageRef.child("images/"+filePath.getLastPathSegment());
-//        UploadTask uploadTask = riversRef.putFile(filePath);
-//
-//        // Register observers to listen for when the download is done or if it fails
-//        uploadTask.addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception exception) {
-//                // Handle unsuccessful uploads
-//            }
-//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-//                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-//            }
-//        });
-
-
-
-//
-//        if(filePath != null)
-//        {
-//            final ProgressDialog progressDialog = new ProgressDialog(this);
-//            progressDialog.setTitle("Uploading...");
-//            progressDialog.show();
-//
-//            StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
-//            ref.putFile(filePath)
-//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            progressDialog.dismiss();
-//                            Uri down = taskSnapshot.getDownloadUrl();
-//                            root.child("MonAn").child(key).child("hinhAnh").setValue(String.valueOf(down));
-//                    //        Toast.makeText(MainActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            progressDialog.dismiss();
-//                    //        Toast.makeText(MainActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    })
-//                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-//                                    .getTotalByteCount());
-//                  //          progressDialog.setMessage("Uploaded "+(int)progress+"%");
-//                        }
-//                    });
-//        }
     }
 
 }
