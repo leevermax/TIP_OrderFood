@@ -5,8 +5,8 @@
 
     <ImageView
         android:id="@+id/imHienThiDSMonAn"
-        android:layout_width="@dimen/size205dp"
-        android:layout_height="@dimen/size205dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@drawable/backgroundheader1"
         android:scaleType="centerCrop"
         />
