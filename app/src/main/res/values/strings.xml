@@ -10,6 +10,8 @@
     <string name="chungminhandan">Chứng minh nhân dân</string>
     <string name="dongy">Đồng ý</string>
     <string name="thoat">Thoát</string>
+    <string name="xacnhan">Xác Nhận</string>
+    <string name="xacnhanphucvu">Giao Món cho Khách</string>
     <string name="dangky">Đăng ký</string>
     <string name="loinhaptendangnhap">Vui lòng nhập tên đăng nhập !</string>
     <string name="loinhapmatkhau">Vui lòng nhập mật khẩu !</string>
@@ -66,4 +68,6 @@
     <string name="yeucauthanhtoan">Đăng Nhập Hoặc Yêu Cầu Nhân Viên Thanh Toán</string>
     <string name="bantrong">Bàn Trống!</string>
     <string name="thongbaoxacnhanthanhtoan">Thanh Toán Cho </string>
+    <string name="hoanthanh">Hoàn Thành</string>
+    <string name="danhsachmondagoi">Danh Sách Gọi Món</string>
 </resources>

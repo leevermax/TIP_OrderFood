@@ -48,7 +48,7 @@ public class AdapterHienThiBanAn extends BaseAdapter implements View.OnClickList
     FragmentManager fragmentManager;
     FirebaseUser user;
     String UID;
-    DatabaseReference root = FirebaseDatabase.getInstance().getReference().child("BAN");
+
     public AdapterHienThiBanAn(Context context, int layout, List<BanAnDTO> banAnDTOList){
         this.context = context;
         this.layout = layout;
@@ -99,13 +99,13 @@ public class AdapterHienThiBanAn extends BaseAdapter implements View.OnClickList
             viewHolderBanAn = (ViewHolderBanAn) view.getTag();
         }
 
+        BanAnDTO banAnDTO = banAnDTOList.get(position);
+
         if (banAnDTOList.get(position).isTinhTrang()){
             hienButton();
         } else {
             anButton(false);
         }
-        BanAnDTO banAnDTO = banAnDTOList.get(position);
-
 
         if (banAnDTO.isTinhTrang()){
             viewHolderBanAn.imBanAn.setImageResource(R.drawable.banantrue);
