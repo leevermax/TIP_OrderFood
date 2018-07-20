@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -11,8 +12,14 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.tip.orderfood.DAO.NhanVienDAO;
 import com.tip.orderfood.DTO.BanAnDTO;
 import com.tip.orderfood.DTO.ChiTietGoiMonDTO;
 import com.tip.orderfood.DTO.NhaBepDTO;
@@ -31,6 +38,9 @@ public class AdapterNhaBep extends BaseAdapter {
 
     DatabaseReference root = FirebaseDatabase.getInstance().getReference().child("ChiTietGoiMon");
     ViewHolder viewHolder;
+
+    String Uid;
+    FirebaseUser user;
 
     public AdapterNhaBep(Context context, int layout, List<NhaBepDTO> nhaBepDTOS) {
         this.context = context;
@@ -59,13 +69,13 @@ public class AdapterNhaBep extends BaseAdapter {
         CheckBox cbHoanThanhBep, cbPhucVuBep;
     }
     @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
+    public View getView(final int i, View convertView, ViewGroup viewGroup) {
         View view = convertView;
         if (view == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             viewHolder = new ViewHolder();
             view = inflater.inflate(R.layout.custom_layuotnhabep,viewGroup,false);
-            viewHolder.txtTenBanAnBep = view.findViewById(R.id.txtTenMonAnBep);
+            viewHolder.txtTenBanAnBep = view.findViewById(R.id.txtTenBanAnBep);
             viewHolder.txtSoLuongBep = view.findViewById(R.id.txtSoLuongBep);
             viewHolder.txtTenMonAnBep = view.findViewById(R.id.txtTenMonAnBep);
             viewHolder.cbHoanThanhBep = view.findViewById(R.id.cbHoanThanhBep);
@@ -82,32 +92,71 @@ public class AdapterNhaBep extends BaseAdapter {
         }
         viewHolder.txtTenMonAnBep.setText(nhaBepDTO.getTenMonAn());
         viewHolder.txtTenBanAnBep.setText(nhaBepDTO.getTenBan());
-        viewHolder.txtSoLuongBep.setText(nhaBepDTO.getSoLuong());
+        viewHolder.txtSoLuongBep.setText(String.valueOf(nhaBepDTO.getSoLuong()) );
 
 
-        viewHolder.cbHoanThanhBep.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
-                    root.child(nhaBepDTO.getMaCT()).child("hoanThanh").setValue(true);
-                } else {
-                    root.child(nhaBepDTO.getMaCT()).child("hoanThanh").setValue(false);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        final NhanVienDAO nhanVienDAO = new NhanVienDAO(context);
+        if (user != null) {
+            Uid = user.getUid().toString();
+
+
+            viewHolder.cbHoanThanhBep.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    final boolean k =b;
+                    nhanVienDAO.kiemTraQuyen(Uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            int role = Integer.parseInt(dataSnapshot.getValue().toString());
+                            if (role == 1 || role == 2) {
+                                if (k) {
+                                    root.child(nhaBepDTO.getMaCT()).child("hoanThanh").setValue(true);
+                                } else {
+                                    root.child(nhaBepDTO.getMaCT()).child("hoanThanh").setValue(false);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
-            }
-        });
+            });
 
-        viewHolder.cbPhucVuBep.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
-                    Intent intent = new Intent(context, XacNhanPhucVuActivity.class);
-                    intent.putExtra("maCT",nhaBepDTO.getMaCT());
-                    intent.putExtra("tenBan", nhaBepDTO.getTenBan());
-                    context.startActivity(intent);
-                    root.child(nhaBepDTO.getMaCT()).child("hoanThanh").setValue(true);
+            viewHolder.cbPhucVuBep.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    final boolean k = b;
+                    nhanVienDAO.kiemTraQuyen(Uid).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            int role = Integer.parseInt(dataSnapshot.getValue().toString());
+                            if (role == 1 || role == 3) {
+
+                                if (k) {
+                                    Intent intent = new Intent(context, XacNhanPhucVuActivity.class);
+                                    intent.putExtra("maCT", nhaBepDTO.getMaCT());
+                                    intent.putExtra("tenBan", nhaBepDTO.getTenBan());
+                                    context.startActivity(intent);
+                                } else {
+                                    Intent ireset = new Intent(context,context.getClass());
+                                    context.startActivity(ireset);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
-            }
-        });
+            });
+        }
 
         return view;
     }

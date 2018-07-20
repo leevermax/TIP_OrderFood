@@ -52,6 +52,10 @@
 
 
         </activity>
+        <activity android:name=".XacNhanPhucVuActivity" android:label="@string/xacnhangaomom" android:theme="@style/PopUpActivity">
+
+
+        </activity>
     </application>
 
 </manifest>

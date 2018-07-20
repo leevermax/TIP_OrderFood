@@ -27,6 +27,7 @@ import com.tip.orderfood.DAO.NhanVienDAO;
 import com.tip.orderfood.FragmentApp.HienThiBanAnFragment;
 import com.tip.orderfood.FragmentApp.HienThiNhanVienFragment;
 import com.tip.orderfood.FragmentApp.HienThiThucDonFragment;
+import com.tip.orderfood.FragmentApp.NhaBepFragment;
 
 public class TrangChuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawerLayout;
@@ -162,6 +163,11 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
                 item.setChecked(true);
                 drawerLayout.closeDrawers();
                 break;
+            case R.id.itNhaBep:
+                showBep();
+                item.setChecked(true);
+                drawerLayout.closeDrawers();
+                break;
             case R.id.itNhanVien:
                 showNhanVien();
                 item.setChecked(true);
@@ -180,6 +186,13 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
 
         }
         return false;
+    }
+
+    private void showBep() {
+        FragmentTransaction tranNhaBep = fragmentManager.beginTransaction();
+        NhaBepFragment  nhaBepFragment = new NhaBepFragment();
+        tranNhaBep.replace(R.id.content,nhaBepFragment);
+        tranNhaBep.commit();
     }
 
     private void showNhanVien() {

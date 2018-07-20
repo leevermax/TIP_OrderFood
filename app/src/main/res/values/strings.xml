@@ -11,6 +11,7 @@
     <string name="dongy">Đồng ý</string>
     <string name="thoat">Thoát</string>
     <string name="xacnhan">Xác Nhận</string>
+    <string name="xacnhangaomom">Xác Nhận Giao Món cho Khách</string>
     <string name="xacnhanphucvu">Giao Món cho Khách</string>
     <string name="dangky">Đăng ký</string>
     <string name="loinhaptendangnhap">Vui lòng nhập tên đăng nhập !</string>
