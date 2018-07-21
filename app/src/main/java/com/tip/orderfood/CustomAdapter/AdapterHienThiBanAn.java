@@ -88,7 +88,7 @@ public class AdapterHienThiBanAn extends BaseAdapter implements View.OnClickList
         if (view == null){
             LayoutInflater  inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             viewHolderBanAn = new ViewHolderBanAn();
-            view = inflater.inflate(R.layout.custom_layout_hienthibanan,parent,false);
+            view = inflater.inflate(layout,parent,false);
             viewHolderBanAn.imBanAn = view.findViewById(R.id.imBanAn);
             viewHolderBanAn.imGoiMon = view.findViewById(R.id.imGoiMon);
             viewHolderBanAn.imThanhToan = view.findViewById(R.id.imThanhToan);

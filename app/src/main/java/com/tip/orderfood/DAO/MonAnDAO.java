@@ -48,6 +48,30 @@ public class MonAnDAO {
 
     }
 
+    public Query LayDanhSachMonAn(){
+        Query query = root;
+
+        return query;
+
+    }
+
+    public void resetLanGoi(){
+        root.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot d: dataSnapshot.getChildren()){
+                    root.child(d.getKey()).child("lanGoi").setValue(0);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void tangDiemMonAn(String maMonAn, int soLuong){
         final  int sl = soLuong;
         final String m = maMonAn;

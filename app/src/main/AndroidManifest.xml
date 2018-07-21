@@ -48,11 +48,19 @@
 
 
         </activity>
+        <activity android:name=".ThongKeChiTietActivity" android:label="@string/chitietgoimon">
+
+
+        </activity>
         <activity android:name=".XacNhanThanhToanActivity" android:label="@string/xacnhanthanhtoan" android:theme="@style/PopUpActivity">
 
 
         </activity>
         <activity android:name=".XacNhanPhucVuActivity" android:label="@string/xacnhangaomom" android:theme="@style/PopUpActivity">
+
+
+        </activity>
+        <activity android:name=".XacNhanResetLanGoiMonActivity" android:label="@string/resetgoimon" android:theme="@style/PopUpActivity">
 
 
         </activity>

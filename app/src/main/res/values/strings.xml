@@ -30,6 +30,7 @@
     <string name="themthucdon">Thên thực đơn</string>
     <string name="tenmonan">Tên món ăn</string>
     <string name="giatien">Giá tiền</string>
+    <string name="chitietgoimon">Chi Tiết Gọi Món</string>
     <string name="banan">Bàn ăn</string>
     <string name="loaithucdon">Loại thực đơn</string>
     <string name="tenloai">Tên loại</string>
@@ -47,7 +48,11 @@
     <string name="xoathanhcong">Xóa thành công !</string>
     <string name="suathanhcong">Sữa thàng công !</string>
     <string name="themnhanvien">Thêm nhân viên !</string>
+    <string name="dongydetieptuc">Đồng Ý Để Tiếp Tục...</string>
+    <string name="resetgoimon">Thiết lập Lại Lần Gọi Món</string>
+    <string name="resetgoimonthanhcong">Thiết lập Lại Lần Gọi Món Thành Công</string>
     <string name="capnhatnhanvien">Cập nhật nhân viên</string>
+    <string name="topmonan">Top Món Ăn</string>
     <string name="xinchao">Xin Chào!</string>
     <string name="khachhang">Khách Hàng</string>
     <string name="nhabep">Nhà Bếp</string>
@@ -65,10 +70,14 @@
     <string name="quyen">Quyền:</string>
     <string name="goimon">Thêm Gọi Món Thành Công</string>
     <string name="tongtien">Tổng Tiền</string>
+    <string name="magoimon">Mã Gọi Món</string>
+    <string name="ngaygoimon">Ngày Gọi</string>
     <string name="khongcoquyenthanhtoan">Không Có Quyền Thanh Toán</string>
     <string name="yeucauthanhtoan">Đăng Nhập Hoặc Yêu Cầu Nhân Viên Thanh Toán</string>
     <string name="bantrong">Bàn Trống!</string>
     <string name="thongbaoxacnhanthanhtoan">Thanh Toán Cho </string>
     <string name="hoanthanh">Hoàn Thành</string>
+    <string name="langoi">Lần Gọi</string>
+    <string name="trong">0</string>
     <string name="danhsachmondagoi">Danh Sách Gọi Món</string>
 </resources>

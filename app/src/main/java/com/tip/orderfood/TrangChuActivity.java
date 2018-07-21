@@ -28,6 +28,7 @@ import com.tip.orderfood.FragmentApp.HienThiBanAnFragment;
 import com.tip.orderfood.FragmentApp.HienThiNhanVienFragment;
 import com.tip.orderfood.FragmentApp.HienThiThucDonFragment;
 import com.tip.orderfood.FragmentApp.NhaBepFragment;
+import com.tip.orderfood.FragmentApp.ThongKeFragment;
 
 public class TrangChuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawerLayout;
@@ -173,6 +174,11 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
                 item.setChecked(true);
                 drawerLayout.closeDrawers();
                 break;
+            case R.id.itThongKe:
+                showThongKe();
+                item.setChecked(true);
+                drawerLayout.closeDrawers();
+                break;
             case R.id.iDangNhap:
                 Intent iDangNhap = new Intent(TrangChuActivity.this,DangNhapActivity.class);
                 startActivity(iDangNhap);
@@ -184,14 +190,23 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
                 startActivity(iTrangChu);
                 break;
 
+
+
         }
         return false;
+    }
+
+    private void showThongKe() {
+        FragmentTransaction tranThongKe = fragmentManager.beginTransaction();
+        ThongKeFragment thongKeFragment = new ThongKeFragment();
+        tranThongKe.replace(R.id.content,thongKeFragment).addToBackStack("trangchu");
+        tranThongKe.commit();
     }
 
     private void showBep() {
         FragmentTransaction tranNhaBep = fragmentManager.beginTransaction();
         NhaBepFragment  nhaBepFragment = new NhaBepFragment();
-        tranNhaBep.replace(R.id.content,nhaBepFragment);
+        tranNhaBep.replace(R.id.content,nhaBepFragment).addToBackStack("trangchu");
         tranNhaBep.commit();
     }
 

@@ -86,9 +86,14 @@ public class AdapterNhaBep extends BaseAdapter {
         }
 
         final NhaBepDTO nhaBepDTO = nhaBepDTOS.get(i);
-        if (nhaBepDTO.isHoanThanh()){
-            viewHolder.cbHoanThanhBep.isChecked();
 
+        if (nhaBepDTOS.get(i).isHoanThanh()){
+            viewHolder.cbHoanThanhBep.setChecked(true);
+        } else {
+            viewHolder.cbHoanThanhBep.setChecked(false);
+        }
+        if(!nhaBepDTOS.get(i).isPhucVu()){
+            viewHolder.cbPhucVuBep.setChecked(false);
         }
         viewHolder.txtTenMonAnBep.setText(nhaBepDTO.getTenMonAn());
         viewHolder.txtTenBanAnBep.setText(nhaBepDTO.getTenBan());
@@ -101,20 +106,20 @@ public class AdapterNhaBep extends BaseAdapter {
             Uid = user.getUid().toString();
 
 
-            viewHolder.cbHoanThanhBep.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            viewHolder.cbHoanThanhBep.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    final boolean k =b;
+                public void onClick(View v) {
                     nhanVienDAO.kiemTraQuyen(Uid).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             int role = Integer.parseInt(dataSnapshot.getValue().toString());
                             if (role == 1 || role == 2) {
-                                if (k) {
-                                    root.child(nhaBepDTO.getMaCT()).child("hoanThanh").setValue(true);
-                                } else {
-                                    root.child(nhaBepDTO.getMaCT()).child("hoanThanh").setValue(false);
-                                }
+                    if ( nhaBepDTOS.get(i).isHoanThanh() == false) {
+                        root.child(nhaBepDTOS.get(i).getMaCT()).child("hoanThanh").setValue(true);
+                    }
+                    else if ( nhaBepDTO.isHoanThanh() == true){
+                        root.child(nhaBepDTOS.get(i).getMaCT()).child("hoanThanh").setValue(false);
+                    }
                             }
                         }
 
@@ -123,7 +128,6 @@ public class AdapterNhaBep extends BaseAdapter {
 
                         }
                     });
-
                 }
             });
 
@@ -142,9 +146,6 @@ public class AdapterNhaBep extends BaseAdapter {
                                     intent.putExtra("maCT", nhaBepDTO.getMaCT());
                                     intent.putExtra("tenBan", nhaBepDTO.getTenBan());
                                     context.startActivity(intent);
-                                } else {
-                                    Intent ireset = new Intent(context,context.getClass());
-                                    context.startActivity(ireset);
                                 }
                             }
                         }

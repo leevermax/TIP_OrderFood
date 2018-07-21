@@ -39,7 +39,7 @@
             android:layout_weight="1"
             android:textSize="@dimen/size18sp"
             android:textStyle="bold"
-            />zzz
+            />
 
     </LinearLayout>
 

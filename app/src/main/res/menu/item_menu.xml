@@ -12,4 +12,12 @@
         android:id="@+id/itThemNhanVien"
         android:title="@string/themnhanvien"
         />
+    <item
+        android:id="@+id/itTopMonAn"
+        android:title="@string/topmonan"
+        />
+    <item
+        android:id="@+id/itResetGoiMon"
+        android:title="@string/resetgoimon"
+        />
 </menu>
