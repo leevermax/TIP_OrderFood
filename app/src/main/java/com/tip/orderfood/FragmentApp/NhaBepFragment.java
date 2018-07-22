@@ -59,7 +59,7 @@ public class NhaBepFragment extends Fragment {
                     nhaBepDTO.setPhucVu(d.child("hoanThanh").getValue(boolean.class));
                     final String maMonAn = d.child("maMonAn").getValue().toString();
                     String maGoiMon = d.child("maGoiMon").getValue().toString();
-                    Log.d("magoimon",maGoiMon);
+
                     root.child("GoiMon").child(maGoiMon).child("maBan").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot2) {

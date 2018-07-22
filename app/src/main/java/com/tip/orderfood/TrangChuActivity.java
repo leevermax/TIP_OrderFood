@@ -12,11 +12,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,11 +28,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tip.orderfood.DAO.NhanVienDAO;
+import com.tip.orderfood.FragmentApp.CaiDatFragmet;
 import com.tip.orderfood.FragmentApp.HienThiBanAnFragment;
 import com.tip.orderfood.FragmentApp.HienThiNhanVienFragment;
 import com.tip.orderfood.FragmentApp.HienThiThucDonFragment;
 import com.tip.orderfood.FragmentApp.NhaBepFragment;
 import com.tip.orderfood.FragmentApp.ThongKeFragment;
+
+import java.io.FileInputStream;
 
 public class TrangChuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawerLayout;
@@ -37,7 +44,6 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
     TextView txtTenNhanVien_navigation;
     FragmentManager fragmentManager;
     String Uid;
-    String emailHT,matKhauHT;
     NhanVienDAO nhanVienDAO;
     Menu menuNav;
     FirebaseDatabase database;
@@ -51,7 +57,6 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
     }
 
     private void addControls() {
-
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationview_trangchu);
         toolbar = findViewById(R.id.toolBar);
@@ -63,13 +68,14 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
 
 
         database = FirebaseDatabase.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
+
 
 
         menuNav = navigationView.getMenu();
         MenuItem nav_itemDangNhap = menuNav.findItem(R.id.iDangNhap);
         MenuItem nav_itemDaXnguat = menuNav.findItem(R.id.iDangXuat);
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null){
             nav_itemDangNhap.setVisible(false);
             nav_itemDaXnguat.setVisible(true);
@@ -104,6 +110,8 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot != null){
                         txtTenNhanVien_navigation.setText(dataSnapshot.getValue().toString());
+                    }  else {
+                        txtTenNhanVien_navigation.setText(getResources().getString(R.string.khachhang));
                     }
                 }
 
@@ -120,8 +128,6 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
         navigationView.setNavigationItemSelectedListener(this);
 
         Intent intent = getIntent();
-        emailHT = intent.getStringExtra("emailHT");
-        matKhauHT = intent.getStringExtra("matKhauHT");
         int k = intent.getIntExtra("keyThemNV",0);
 
         fragmentManager = getSupportFragmentManager();
@@ -130,8 +136,6 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
 
             HienThiNhanVienFragment hienThiNhanVienFragment = new HienThiNhanVienFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("emailHT",emailHT);
-            bundle.putString("matKhauHT",matKhauHT);
             hienThiNhanVienFragment.setArguments(bundle);
 
             FragmentTransaction tranNhanVien = fragmentManager.beginTransaction();
@@ -179,6 +183,11 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
                 item.setChecked(true);
                 drawerLayout.closeDrawers();
                 break;
+            case R.id.itCaiDat:
+                showTrangCaiDat();
+                item.setChecked(true);
+                drawerLayout.closeDrawers();
+                break;
             case R.id.iDangNhap:
                 Intent iDangNhap = new Intent(TrangChuActivity.this,DangNhapActivity.class);
                 startActivity(iDangNhap);
@@ -196,11 +205,27 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
         return false;
     }
 
+    private void showTrangCaiDat() {
+        if (user != null){
+            FragmentTransaction tranCaiDat = fragmentManager.beginTransaction();
+            CaiDatFragmet caiDatFragmet = new CaiDatFragmet();
+            tranCaiDat.replace(R.id.content,caiDatFragmet).addToBackStack("trangchu");
+            tranCaiDat.commit();
+        } else {
+            Toast.makeText(this, getResources().getString(R.string.loidangnhaplai), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void showThongKe() {
-        FragmentTransaction tranThongKe = fragmentManager.beginTransaction();
-        ThongKeFragment thongKeFragment = new ThongKeFragment();
-        tranThongKe.replace(R.id.content,thongKeFragment).addToBackStack("trangchu");
-        tranThongKe.commit();
+        if (user != null){
+            FragmentTransaction tranThongKe = fragmentManager.beginTransaction();
+            ThongKeFragment thongKeFragment = new ThongKeFragment();
+            tranThongKe.replace(R.id.content,thongKeFragment).addToBackStack("trangchu");
+            tranThongKe.commit();
+        } else {
+            Toast.makeText(this, getResources().getString(R.string.loidangnhaplai), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void showBep() {
@@ -212,11 +237,6 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
 
     private void showNhanVien() {
         HienThiNhanVienFragment hienThiNhanVienFragment = new HienThiNhanVienFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("emailHT",emailHT);
-        bundle.putString("matKhauHT",matKhauHT);
-        hienThiNhanVienFragment.setArguments(bundle);
-
         FragmentTransaction tranNhanVien = fragmentManager.beginTransaction();
         tranNhanVien.replace(R.id.content,hienThiNhanVienFragment).addToBackStack("trangchu");
         tranNhanVien.commit();

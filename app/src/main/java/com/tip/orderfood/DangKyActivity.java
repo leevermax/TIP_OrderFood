@@ -27,7 +27,7 @@ public class DangKyActivity extends AppCompatActivity
     DatabaseReference root;
 
     String email;
-    String UIDnv,password,emailHT,matKhauHT;
+    String UIDnv,password;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,9 +48,6 @@ public class DangKyActivity extends AppCompatActivity
 
         mAuth = FirebaseAuth.getInstance();
         root = FirebaseDatabase.getInstance().getReference().child("USERS");
-        Intent intent = getIntent();
-        emailHT = intent.getStringExtra("emailHT");
-        matKhauHT = intent.getStringExtra("matKhauHT");
     }
     private void addEvents() {
         btnDangKyDK.setOnClickListener(new View.OnClickListener() {
@@ -108,8 +105,7 @@ public class DangKyActivity extends AppCompatActivity
             UIDnv = user.getUid().toString();
 
             Intent iThemThongTin = new Intent(DangKyActivity.this,ThemThongTinActivity.class);
-            iThemThongTin.putExtra("emailHT",emailHT);
-            iThemThongTin.putExtra("matKhauHT",matKhauHT);
+            iThemThongTin.putExtra("matKhau",password);
             iThemThongTin.putExtra("idnv",UIDnv);
             iThemThongTin.putExtra("email",email);
             startActivity(iThemThongTin);

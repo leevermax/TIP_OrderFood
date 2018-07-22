@@ -20,7 +20,7 @@
             android:layout_weight="3"
             android:text="@string/magoimon"
             android:textSize="@dimen/size12sp"
-            android:textColor="@color/colorOrgan"
+            android:textColor="@color/colorPink"
             />
 
         <TextView

@@ -145,7 +145,7 @@
             android:drawableLeft="@drawable/idcard"
             android:drawablePadding="@dimen/size10dp"
             android:hint="@string/chungminhandan"
-            android:maxLength="8"
+            android:maxLength="15"
             android:numeric="integer"
             android:padding="@dimen/size5dp"
             android:textColor="@color/colorGray"

@@ -17,8 +17,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tip.orderfood.CustomAdapter.AdapterQuyen;
 import com.tip.orderfood.DAO.NhanVienDAO;
@@ -42,8 +45,12 @@ public class ThemThongTinActivity extends AppCompatActivity implements View.OnCl
     AdapterQuyen adapterQuyen;
     String sGioiTinh;
     RadioButton rdNam,rdNu;
-    String UIDnv,email,matKhauHT,emailHT;
+    String UIDnv,email,matKhau,UidHT;
     NhanVienDAO nhanVienDAO;
+
+    DatabaseReference root;
+
+    FirebaseUser user;
 
     FirebaseAuth mAuth;
     @Override
@@ -69,13 +76,18 @@ public class ThemThongTinActivity extends AppCompatActivity implements View.OnCl
 
         nhanVienDAO = new NhanVienDAO(this);
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null){
+            UidHT = user.getUid().toString();
+        }
+
         mAuth = FirebaseAuth.getInstance();
+        root = FirebaseDatabase.getInstance().getReference().child("Users");
 
         Intent intent = getIntent();
         UIDnv = intent.getStringExtra("idnv");
         email = intent.getStringExtra("email");
-        emailHT = intent.getStringExtra("emailHT");
-        matKhauHT = intent.getStringExtra("matKhauHT");
+        matKhau = intent.getStringExtra("matKhau");
     }
 
     private void addEvents() {
@@ -111,7 +123,7 @@ public class ThemThongTinActivity extends AppCompatActivity implements View.OnCl
         switch (id){
             case R.id.btnDongYDK:
                 themNV();
-                dangNhapLai();
+                dangNhapLaiVoiUID();
                 break;
 
         }
@@ -157,32 +169,45 @@ public class ThemThongTinActivity extends AppCompatActivity implements View.OnCl
             Toast.makeText(ThemThongTinActivity.this,getResources().getString(R.string.loinhaptendangnhap), Toast.LENGTH_SHORT).show();
         }else {
 
-            NhanVienDTO nhanVienDTO = new NhanVienDTO(quyen,email,sCMND,sHoTen,sGioiTinh,sNgaySinh,sPhone);
+            NhanVienDTO nhanVienDTO = new NhanVienDTO(quyen,email,matKhau,sCMND,sHoTen,sGioiTinh,sNgaySinh,sPhone);
 
             nhanVienDAO.addNV(UIDnv,nhanVienDTO);
         }
 
 
     }
-    private void dangNhapLai(){
+    private void dangNhapLaiVoiUID(){
+        root.child(UidHT).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String matKhauHT,emailHT;
+                matKhauHT = dataSnapshot.child("matKhau").getValue(String.class);
+                emailHT = dataSnapshot.child("email").getValue(String.class);
+                dangNhapLai(emailHT,matKhauHT);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+    private void dangNhapLai(String emailHT, String matKhauHT){
         mAuth.signInWithEmailAndPassword(emailHT, matKhauHT)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Intent iTrangChu = new Intent(ThemThongTinActivity.this,TrangChuActivity.class);
-                            iTrangChu.putExtra("emailHT",emailHT);
-                            iTrangChu.putExtra("matKhauHT",matKhauHT);
                             iTrangChu.putExtra("keyThemNV",1);
                             startActivity(iTrangChu);
                         } else {
-
+                            Toast.makeText(ThemThongTinActivity.this,getResources().getString(R.string.loidangnhaplai), Toast.LENGTH_SHORT).show();
                         }
 
-                        // ...
                     }
                 });
-
     }
 
 }

@@ -2,19 +2,28 @@ package com.tip.orderfood.DTO;
 
 public class NhanVienDTO {
 
-    String maQuyen,email,uid,cmnd,hoTen,gioiTinh,ngaySinh,phone;
+    String maQuyen,email,matKhau,uid,cmnd,hoTen,gioiTinh,ngaySinh,phone;
 
     public NhanVienDTO() {
     }
 
-    public NhanVienDTO(String maQuyen, String email, String cmnd, String hoTen, String gioiTinh, String ngaySinh,String phone) {
+    public NhanVienDTO(String maQuyen, String email, String matKhau, String cmnd, String hoTen, String gioiTinh, String ngaySinh,String phone) {
         this.maQuyen = maQuyen;
         this.email = email;
+        this.matKhau = matKhau;
         this.cmnd = cmnd;
         this.hoTen = hoTen;
         this.gioiTinh = gioiTinh;
         this.ngaySinh = ngaySinh;
         this.phone = phone;
+    }
+
+    public String getMatKhau() {
+        return matKhau;
+    }
+
+    public void setMatKhau(String matKhau) {
+        this.matKhau = matKhau;
     }
 
     public String getPhone() {

@@ -40,7 +40,6 @@ public class HienThiNhanVienFragment extends Fragment
     List<NhanVienDTO> nhanVienDTOS;
     AdapterNhanVien adapterNhanVien;
 
-    String emailHT,matKhauHT;
 
     String Uid;
     FirebaseUser user;
@@ -79,8 +78,6 @@ public class HienThiNhanVienFragment extends Fragment
 
         Bundle bundle = getArguments();
         if(bundle !=  null){
-            emailHT = bundle.getString("emailHT");
-            matKhauHT = bundle.getString("matKhauHT");
         }
         view.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -126,8 +123,6 @@ public class HienThiNhanVienFragment extends Fragment
         switch (id){
             case R.id.itThemNhanVien:
                 Intent iThemNhanVien = new Intent(getActivity(), DangKyActivity.class);
-                iThemNhanVien.putExtra("emailHT",emailHT);
-                iThemNhanVien.putExtra("matKhauHT",matKhauHT);
                 startActivity(iThemNhanVien);
                 break;
         }

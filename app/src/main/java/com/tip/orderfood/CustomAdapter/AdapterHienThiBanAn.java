@@ -19,7 +19,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tip.orderfood.DAO.BanAnDAO;
@@ -34,8 +33,6 @@ import com.tip.orderfood.TrangChuActivity;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-
-import okhttp3.internal.tls.CertificateChainCleaner;
 
 public class AdapterHienThiBanAn extends BaseAdapter implements View.OnClickListener{
 
@@ -260,7 +257,7 @@ public class AdapterHienThiBanAn extends BaseAdapter implements View.OnClickList
 
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {
-                                        Toast.makeText(context, R.string.khongcoquyenthanhtoan, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, R.string.khongcoquyenthuchien, Toast.LENGTH_SHORT).show();
                                     }
                                 });
 

@@ -4,13 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,8 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tip.orderfood.DAO.NhanVienDAO;
-import com.tip.orderfood.DTO.BanAnDTO;
-import com.tip.orderfood.DTO.ChiTietGoiMonDTO;
 import com.tip.orderfood.DTO.NhaBepDTO;
 import com.tip.orderfood.R;
 import com.tip.orderfood.TrangChuActivity;
@@ -102,39 +100,47 @@ public class AdapterNhaBep extends BaseAdapter {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         final NhanVienDAO nhanVienDAO = new NhanVienDAO(context);
-        if (user != null) {
-            Uid = user.getUid().toString();
 
 
-            viewHolder.cbHoanThanhBep.setOnClickListener(new View.OnClickListener() {
+
+        viewHolder.cbHoanThanhBep.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    nhanVienDAO.kiemTraQuyen(Uid).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            int role = Integer.parseInt(dataSnapshot.getValue().toString());
-                            if (role == 1 || role == 2) {
-                    if ( nhaBepDTOS.get(i).isHoanThanh() == false) {
-                        root.child(nhaBepDTOS.get(i).getMaCT()).child("hoanThanh").setValue(true);
-                    }
-                    else if ( nhaBepDTO.isHoanThanh() == true){
-                        root.child(nhaBepDTOS.get(i).getMaCT()).child("hoanThanh").setValue(false);
-                    }
+                public void onClick (View v){
+                    if (user != null){
+                        Uid = user.getUid().toString();
+                        nhanVienDAO.kiemTraQuyen(Uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                int role = Integer.parseInt(dataSnapshot.getValue().toString());
+                                if (role == 1 || role == 2) {
+                                    if (nhaBepDTOS.get(i).isHoanThanh() == false) {
+                                        root.child(nhaBepDTOS.get(i).getMaCT()).child("hoanThanh").setValue(true);
+                                    } else if (nhaBepDTO.isHoanThanh() == true) {
+                                        root.child(nhaBepDTOS.get(i).getMaCT()).child("hoanThanh").setValue(false);
+                                    }
+                                } else {
+                                    Toast.makeText(context, R.string.khongcoquyenthuchien, Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                        }
-                    });
+                            }
+                        });
+                     } else {
+                        Toast.makeText(context, R.string.khongcoquyenthuchien, Toast.LENGTH_SHORT).show();
+                    }
                 }
-            });
+        });
 
-            viewHolder.cbPhucVuBep.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    final boolean k = b;
+        viewHolder.cbPhucVuBep.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                final boolean k = b;
+                if (user != null) {
+                    Uid = user.getUid().toString();
+
                     nhanVienDAO.kiemTraQuyen(Uid).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -147,6 +153,8 @@ public class AdapterNhaBep extends BaseAdapter {
                                     intent.putExtra("tenBan", nhaBepDTO.getTenBan());
                                     context.startActivity(intent);
                                 }
+                            } else {
+                                Toast.makeText(context, R.string.khongcoquyenthuchien, Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -155,9 +163,12 @@ public class AdapterNhaBep extends BaseAdapter {
 
                         }
                     });
+                } else {
+                    Toast.makeText(context, R.string.khongcoquyenthuchien, Toast.LENGTH_SHORT).show();
                 }
-            });
-        }
+            }
+        });
+
 
         return view;
     }

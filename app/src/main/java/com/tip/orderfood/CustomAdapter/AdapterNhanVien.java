@@ -1,6 +1,8 @@
 package com.tip.orderfood.CustomAdapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +15,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.tip.orderfood.ChiTietNhanVienActivity;
 import com.tip.orderfood.DAO.NhanVienDAO;
 import com.tip.orderfood.DTO.NhanVienDTO;
 import com.tip.orderfood.R;
+import com.tip.orderfood.TrangChuActivity;
 
 import java.util.List;
 
@@ -70,7 +74,7 @@ public class AdapterNhanVien extends BaseAdapter {
             viewHolderNhanVien = (ViewHolderNhanVien) view.getTag();
         }
 
-        NhanVienDTO nhanVienDTO = nhanVienDTOS.get(position);
+        final NhanVienDTO nhanVienDTO = nhanVienDTOS.get(position);
 
         viewHolderNhanVien.txtTenNhanVien.setText(nhanVienDTO.getHoTen());
         viewHolderNhanVien.txtEmail.setText(nhanVienDTO.getEmail());
@@ -83,6 +87,19 @@ public class AdapterNhanVien extends BaseAdapter {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+//
+//        Intent layITrangChu = ((TrangChuActivity)context).getIntent();
+//        final String emailHT = layITrangChu.getStringExtra("emailHT");
+//        final String matKhauHT = layITrangChu.getStringExtra("matKhauHT");
+
+        viewHolderNhanVien.imHinhNhanVien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent iChiTiet = new Intent(context, ChiTietNhanVienActivity.class);
+                iChiTiet.putExtra("UID",nhanVienDTO.getUid());
+                context.startActivity(iChiTiet);
             }
         });
         return view;
