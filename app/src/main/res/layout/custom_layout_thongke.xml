@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:background="@color/backgroundtransparentGreen"
         android:orientation="horizontal"
-        android:padding="@dimen/size10dp"
+        android:padding="@dimen/size5dp"
         android:weightSum="7">
 
         <TextView
@@ -20,6 +20,7 @@
             android:layout_weight="3"
             android:text="@string/magoimon"
             android:textSize="@dimen/size12sp"
+            android:layout_margin="@dimen/size5dp"
             android:textColor="@color/colorPink"
             />
 
@@ -28,6 +29,7 @@
             android:layout_width="0dp"
             android:textColor="@color/colorOrgan"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="2"
             android:text="@string/ngaygoimon"/>
 
@@ -37,6 +39,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorOrgan"
             android:layout_weight="2"
+            android:layout_margin="@dimen/size5dp"
             android:text="@string/tongtien"
             android:textSize="@dimen/size12sp"/>
 

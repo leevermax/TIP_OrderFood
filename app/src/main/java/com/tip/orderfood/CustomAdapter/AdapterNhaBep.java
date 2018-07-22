@@ -72,7 +72,7 @@ public class AdapterNhaBep extends BaseAdapter {
         if (view == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             viewHolder = new ViewHolder();
-            view = inflater.inflate(R.layout.custom_layuotnhabep,viewGroup,false);
+            view = inflater.inflate(R.layout.custom_layuot_nhabep,viewGroup,false);
             viewHolder.txtTenBanAnBep = view.findViewById(R.id.txtTenBanAnBep);
             viewHolder.txtSoLuongBep = view.findViewById(R.id.txtSoLuongBep);
             viewHolder.txtTenMonAnBep = view.findViewById(R.id.txtTenMonAnBep);

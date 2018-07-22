@@ -90,5 +90,6 @@
     <string name="hoanthanh">Hoàn Thành</string>
     <string name="langoi">Lần Gọi</string>
     <string name="trong">0</string>
+    <string name="menu">Menu</string>
     <string name="danhsachmondagoi">Danh Sách Gọi Món</string>
 </resources>

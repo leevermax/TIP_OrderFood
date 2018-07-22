@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -56,7 +57,34 @@ public class HienThiBanAnFragment extends Fragment {
         banAnDAO = new BanAnDAO(getActivity());
         nhanVienDAO = new NhanVienDAO(getActivity());
         user = FirebaseAuth.getInstance().getCurrentUser();
-        hienThiDanhSachBanAn();
+
+
+        banAnDTOList = new ArrayList<>();
+
+
+        adapterHienThiBanAn = new AdapterHienThiBanAn(getActivity(),R.layout.custom_layout_hienthibanan,banAnDTOList);
+        gvHienThiBanAn.setAdapter(adapterHienThiBanAn);
+        banAnDAO.getlistban().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                banAnDTOList.clear();
+                for(DataSnapshot d: dataSnapshot.getChildren()){
+                    BanAnDTO banAnDTO = d.getValue(BanAnDTO.class);
+                    banAnDTO.setMaBan(d.getKey().toString());
+                    banAnDTOList.add(banAnDTO);
+                }
+
+
+                registerForContextMenu(gvHienThiBanAn);
+                adapterHienThiBanAn.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         return view;
     }
 
@@ -101,29 +129,10 @@ public class HienThiBanAnFragment extends Fragment {
     }
 
     private void hienThiDanhSachBanAn(){
-        banAnDTOList = new ArrayList<>();
 
 
-        adapterHienThiBanAn = new AdapterHienThiBanAn(getActivity(),R.layout.custom_layout_hienthibanan,banAnDTOList);
-        gvHienThiBanAn.setAdapter(adapterHienThiBanAn);
-        banAnDAO.getlistban().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                banAnDTOList.clear();
-                for(DataSnapshot d: dataSnapshot.getChildren()){
-                    BanAnDTO banAnDTO = d.getValue(BanAnDTO.class);
-                    banAnDTO.setMaBan(d.getKey().toString());
-                    banAnDTOList.add(banAnDTO);
-                }
-                adapterHienThiBanAn.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -141,5 +150,28 @@ public class HienThiBanAnFragment extends Fragment {
                 }
             }
         }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        getActivity().getMenuInflater().inflate(R.menu.memu_context,menu);
+        menu.setHeaderTitle(R.string.menu);
+//        menu.setHeaderIcon();
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        int vTri = gvHienThiBanAn.getSelectedItemPosition();
+        String maBan = banAnDTOList.get(vTri).getMaBan();
+        switch (item.getItemId()){
+            case R.id.itSua:
+
+                break;
+            case R.id.itXoa:
+
+                break;
+        }
+        return super.onContextItemSelected(item);
     }
 }

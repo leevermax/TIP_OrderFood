@@ -4,9 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -56,6 +57,7 @@ public class HienThiDanhMonAnFragment extends android.support.v4.app.Fragment {
                         monAnDTO.setMaMonAn(d.getKey().toString());
                         monAnDTOS.add(monAnDTO);
                     }
+                    registerForContextMenu(gridView);
                     adapterHienThiDanhSachMonAn.notifyDataSetChanged();
                 }
 
@@ -95,5 +97,27 @@ public class HienThiDanhMonAnFragment extends android.support.v4.app.Fragment {
         });
         return view;
     }
-
+//
+//    @Override
+//    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+//        getActivity().getMenuInflater().inflate(R.menu.memu_context,menu);
+//        menu.setHeaderTitle(R.string.menu);
+////        menu.setHeaderIcon();
+//        super.onCreateContextMenu(menu, v, menuInfo);
+//    }
+//
+//    @Override
+//    public boolean onContextItemSelected(MenuItem item) {
+//        int vTri = gridView.getSelectedItemPosition();
+//        String maMonAn = monAnDTOS.get(vTri).getMaMonAn();
+//        switch (item.getItemId()){
+//            case R.id.itSua:
+//
+//                break;
+//            case R.id.itXoa:
+//
+//                break;
+//        }
+//        return super.onContextItemSelected(item);
+//    }
 }

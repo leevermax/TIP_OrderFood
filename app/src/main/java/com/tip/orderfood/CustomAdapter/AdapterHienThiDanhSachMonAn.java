@@ -2,6 +2,7 @@ package com.tip.orderfood.CustomAdapter;
 
 import android.content.Context;
 import android.net.Uri;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +79,9 @@ public class AdapterHienThiDanhSachMonAn extends BaseAdapter {
         viewHolderHienThiDanhSachMonAn.txtTenMonAn.setText(monAnDTO.getTenMonAn());
         viewHolderHienThiDanhSachMonAn.txtGiaTien.setText(context.getResources().getString(R.string.gia) + monAnDTO.getGiaTien());
 
+
         return view;
     }
+
+
 }
