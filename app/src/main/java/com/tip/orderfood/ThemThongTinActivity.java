@@ -50,8 +50,6 @@ public class ThemThongTinActivity extends AppCompatActivity implements View.OnCl
 
     DatabaseReference root;
 
-    FirebaseUser user;
-
     FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +74,7 @@ public class ThemThongTinActivity extends AppCompatActivity implements View.OnCl
 
         nhanVienDAO = new NhanVienDAO(this);
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null){
-            UidHT = user.getUid().toString();
-        }
+
 
         mAuth = FirebaseAuth.getInstance();
         root = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -88,6 +83,7 @@ public class ThemThongTinActivity extends AppCompatActivity implements View.OnCl
         UIDnv = intent.getStringExtra("idnv");
         email = intent.getStringExtra("email");
         matKhau = intent.getStringExtra("matKhau");
+        UidHT = intent.getStringExtra("UidHT");
     }
 
     private void addEvents() {

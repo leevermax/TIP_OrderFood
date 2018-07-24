@@ -25,8 +25,8 @@ public class DangKyActivity extends AppCompatActivity
 
     FirebaseAuth mAuth;
     DatabaseReference root;
-
-    String email;
+    FirebaseUser UserHT;
+    String email,UidHT;
     String UIDnv,password;
 
     @Override
@@ -48,6 +48,10 @@ public class DangKyActivity extends AppCompatActivity
 
         mAuth = FirebaseAuth.getInstance();
         root = FirebaseDatabase.getInstance().getReference().child("USERS");
+        UserHT = FirebaseAuth.getInstance().getCurrentUser();
+        if (UserHT != null){
+            UidHT = UserHT.getUid();
+        }
     }
     private void addEvents() {
         btnDangKyDK.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +112,7 @@ public class DangKyActivity extends AppCompatActivity
             iThemThongTin.putExtra("matKhau",password);
             iThemThongTin.putExtra("idnv",UIDnv);
             iThemThongTin.putExtra("email",email);
+            iThemThongTin.putExtra("UidHT",UidHT);
             startActivity(iThemThongTin);
 
 

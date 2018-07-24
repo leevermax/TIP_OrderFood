@@ -59,7 +59,8 @@ public class GoiMonDAO {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot2) {
                             for (DataSnapshot d2: dataSnapshot2.getChildren()){
-                                FirebaseDatabase.getInstance().getReference().child("ChiTietGoiMon").child(d2.getKey()).removeValue();
+                                String maCT = d2.getKey();
+                                FirebaseDatabase.getInstance().getReference().child("ChiTietGoiMon").child(maCT).removeValue();
                             }
                         }
 

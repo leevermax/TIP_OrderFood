@@ -63,7 +63,6 @@ public class NhaBepFragment extends Fragment {
                     root.child("GoiMon").child(maGoiMon).child("maBan").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot2) {
-
                             root.child("Ban").child(dataSnapshot2.getValue().toString()).child("tenBan").addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot3) {
