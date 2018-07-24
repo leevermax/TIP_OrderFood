@@ -29,6 +29,7 @@ import com.tip.orderfood.DAO.QuyenDAO;
 import com.tip.orderfood.DTO.NhanVienDTO;
 import com.tip.orderfood.DTO.QuyenDTO;
 import com.tip.orderfood.FragmentApp.DatePickerFragment;
+import com.tip.orderfood.Support.EnDeCryption;
 import com.tip.orderfood.Support.SuaDuLieu;
 
 import java.util.ArrayList;
@@ -83,6 +84,8 @@ public class ThemThongTinActivity extends AppCompatActivity implements View.OnCl
         UIDnv = intent.getStringExtra("idnv");
         email = intent.getStringExtra("email");
         matKhau = intent.getStringExtra("matKhau");
+        EnDeCryption enDeCryption = new EnDeCryption();
+        matKhau = enDeCryption.enCrypt(matKhau);
         UidHT = intent.getStringExtra("UidHT");
     }
 
@@ -178,6 +181,8 @@ public class ThemThongTinActivity extends AppCompatActivity implements View.OnCl
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String matKhauHT,emailHT;
                 matKhauHT = dataSnapshot.child("matKhau").getValue(String.class);
+                EnDeCryption enDeCryption = new EnDeCryption();
+                matKhauHT = enDeCryption.deCrypt(matKhauHT);
                 emailHT = dataSnapshot.child("email").getValue(String.class);
                 dangNhapLai(emailHT,matKhauHT);
             }

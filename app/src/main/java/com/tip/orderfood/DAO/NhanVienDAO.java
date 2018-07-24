@@ -65,5 +65,7 @@ public class NhanVienDAO {
         Query query = root;
         return query;
     }
-
+    public void doiMatKhau(String Uid,String enPass){
+        root.child(Uid).child("matKhau").setValue(enPass);
+    }
 }
