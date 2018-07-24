@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:text="tên"
         android:textColor="@color/colorRed"
+        android:drawableLeft="@drawable/nhanvien"
         android:textSize="@dimen/size28sp"
         android:padding="@dimen/size5dp"
         android:layout_margin="@dimen/size5dp"

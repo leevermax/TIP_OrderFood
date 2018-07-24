@@ -40,6 +40,16 @@ public class MonAnDAO {
         return key;
 
     }
+    public void suaMonAn(String maMonAn,MonAnDTO monAnDTO){
+
+        root.child(maMonAn).setValue(monAnDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, R.string.suathanhcong, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
 
     public Query LayDanhSachMonAnTheoLoai(String maLoai){
         Query query = root.orderByChild("maLoai").equalTo(maLoai);
@@ -54,7 +64,12 @@ public class MonAnDAO {
         return query;
 
     }
+    public Query layMonAnTheoMa(String maMonAn){
+        Query query = root.child(maMonAn);
 
+        return query;
+
+    }
     public void resetLanGoi(){
         root.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -86,6 +101,60 @@ public class MonAnDAO {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+    }
+
+    public void xoaMonAnTheoLoai(String maLoai){
+        root.orderByChild("maLoai").equalTo(maLoai).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (final DataSnapshot d: dataSnapshot.getChildren()){
+                    String maMonAn = d.getKey();
+                    FirebaseDatabase.getInstance().getReference().child("ChiTietGoiMon").orderByChild("maMonAn").equalTo(maMonAn).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot2) {
+                            for (DataSnapshot d2 : dataSnapshot2.getChildren()){
+                                String maCT = d2.getKey();
+                                FirebaseDatabase.getInstance().getReference().child("ChiTietGoiMon").child(maCT).removeValue();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                    root.child(maMonAn).removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void xoaMonAn(String maMonAn){
+        FirebaseDatabase.getInstance().getReference().child("ChiTietGoiMon").orderByChild("maMonAn").equalTo(maMonAn).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot2) {
+                for (DataSnapshot d2 : dataSnapshot2.getChildren()){
+                    String maCT = d2.getKey();
+                    FirebaseDatabase.getInstance().getReference().child("ChiTietGoiMon").child(maCT).removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        root.child(maMonAn).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, R.string.xoathanhcong, Toast.LENGTH_SHORT).show();
             }
         });
     }

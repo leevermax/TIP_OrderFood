@@ -1,10 +1,8 @@
 package com.tip.orderfood;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -12,9 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -34,6 +30,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.tip.orderfood.CustomAdapter.AdapterHienThiLoaiMonAn;
 import com.tip.orderfood.DAO.LoaiMonAnDAO;
 import com.tip.orderfood.DAO.MonAnDAO;
@@ -41,21 +38,21 @@ import com.tip.orderfood.DTO.LoaiMonAnDTO;
 import com.tip.orderfood.DTO.MonAnDTO;
 import com.tip.orderfood.Support.SuaDuLieu;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.UUID;
 
-public class ThemThucDonActiivity extends AppCompatActivity implements View.OnClickListener{
+public class SuaMonAnActivity extends AppCompatActivity implements View.OnClickListener{
 
     public static int REQUEST_CODE_THEMLOAITHUCDON =113;
     public static int REQUEST_CODE_MOHINH =123;
+
     ImageButton imThemLoaiThucDon;
     Spinner spinLoaiMonAn;
     LoaiMonAnDAO loaiMonAnDAO;
     List<LoaiMonAnDTO> loaiMonAnDTOS;
+
     AdapterHienThiLoaiMonAn adapterHienThiLoaiMonAn;
 
     MonAnDAO monAnDAO;
@@ -63,6 +60,8 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
     ImageView imHinhThucDon;
     Button btnDongYThemMonAn, btnThoatThemMonAn;
     EditText edTenMonAn, edGiaTien;
+
+    String maMonAn;
 
     FirebaseStorage storage;
     StorageReference mountainResult;
@@ -79,7 +78,33 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
 
         addConTrols();
         addEvents();
+    }
 
+    private void addEvents() {
+
+        monAnDAO.layMonAnTheoMa(maMonAn).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                MonAnDTO monAnDTO = dataSnapshot.getValue(MonAnDTO.class);
+                edTenMonAn.setText(monAnDTO.getTenMonAn());
+                edGiaTien.setText(String.valueOf(monAnDTO.getGiaTien()));
+                if (!monAnDTO.getHinhAnh().equals("")){
+                    Picasso.get().load(monAnDTO.getHinhAnh().toString()).into(imHinhThucDon);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        imThemLoaiThucDon.setOnClickListener(this);
+
+        imHinhThucDon.setOnClickListener(this);
+
+        btnDongYThemMonAn.setOnClickListener(this);
+        btnThoatThemMonAn.setOnClickListener(this);
     }
 
     private void addConTrols() {
@@ -104,24 +129,18 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
         storageRef = storage.getReferenceFromUrl("gs://orderfood-5d1b9.appspot.com");
         mStorageRef = storage.getReference("ImageThucDon");
 
-
-
-    }
-
-    private void addEvents() {
-        imThemLoaiThucDon.setOnClickListener(this);
-
         hienThiSpinnerLoaiMonAn();
 
-        imHinhThucDon.setOnClickListener(this);
+        Intent iSuaMonAn = getIntent();
+        maMonAn = iSuaMonAn.getStringExtra("maMonAn");
 
-        btnDongYThemMonAn.setOnClickListener(this);
-        btnThoatThemMonAn.setOnClickListener(this);
+
+
     }
 
-    private void hienThiSpinnerLoaiMonAn(){
+    private void hienThiSpinnerLoaiMonAn() {
 
-        adapterHienThiLoaiMonAn = new AdapterHienThiLoaiMonAn(ThemThucDonActiivity.this,R.layout.custom_layout_spinloaithucdon,loaiMonAnDTOS);
+        adapterHienThiLoaiMonAn = new AdapterHienThiLoaiMonAn(SuaMonAnActivity.this,R.layout.custom_layout_spinloaithucdon,loaiMonAnDTOS);
         spinLoaiMonAn.setAdapter(adapterHienThiLoaiMonAn);
 
         loaiMonAnDAO.layDanhSachLoaiMonAn().addValueEventListener(new ValueEventListener() {
@@ -142,7 +161,6 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-
     }
 
     @Override
@@ -150,7 +168,7 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
         int id = v.getId();
         switch (id){
             case R.id.imThemLoaiThucDon:
-                Intent iThemLoaiMonAn = new Intent(ThemThucDonActiivity.this,ThemLoaiThucDonActivity.class);
+                Intent iThemLoaiMonAn = new Intent(SuaMonAnActivity.this,ThemLoaiThucDonActivity.class);
                 startActivityForResult(iThemLoaiMonAn,REQUEST_CODE_THEMLOAITHUCDON);
                 break;
             case R.id.imHinhThucDon:
@@ -177,15 +195,9 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
                     monAnDTO.setTenMonAn(tenmonan);
                     monAnDTO.setLanGoi(0);
 
-                    final String key = monAnDAO.themMonAn(monAnDTO);
-                    uploadImage(key);
-                    if(key != null){
-                        Toast.makeText(this,getResources().getString(R.string.themthanhcong),Toast.LENGTH_SHORT).show();
-                        finish();
-                    }else{
-                        Toast.makeText(this,getResources().getString(R.string.themthatbai),Toast.LENGTH_SHORT).show();
-                    }
-
+                    monAnDAO.suaMonAn(maMonAn,monAnDTO);
+                    uploadImage(maMonAn);
+                    finish();
                 }
 
                 break;
@@ -244,7 +256,7 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(ThemThucDonActiivity.this, R.string.loi + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SuaMonAnActivity.this, R.string.loi + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

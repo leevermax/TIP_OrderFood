@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -23,9 +26,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tip.orderfood.DAO.BanAnDAO;
 import com.tip.orderfood.DAO.GoiMonDAO;
+import com.tip.orderfood.DAO.NhanVienDAO;
 import com.tip.orderfood.DTO.BanAnDTO;
 import com.tip.orderfood.DTO.GoiMonDTO;
 import com.tip.orderfood.FragmentApp.HienThiThucDonFragment;
+import com.tip.orderfood.MenuBanAnActivity;
 import com.tip.orderfood.R;
 import com.tip.orderfood.ThanhToanActivity;
 import com.tip.orderfood.TrangChuActivity;
@@ -79,7 +84,7 @@ public class AdapterHienThiBanAn extends BaseAdapter implements View.OnClickList
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         View view = convertView;
         if (view == null){
@@ -122,8 +127,43 @@ public class AdapterHienThiBanAn extends BaseAdapter implements View.OnClickList
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+        final NhanVienDAO nhanVienDAO = new NhanVienDAO(context);
+
+
+        viewHolderBanAn.imBanAn.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                if (user != null){
+                    UID = user.getUid().toString();
+                    nhanVienDAO.kiemTraQuyen(UID).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            int role = Integer.parseInt(dataSnapshot.getValue().toString());
+                            if(role == 1 || role == 3){
+                                final String maBan = banAnDTOList.get(position).getMaBan();
+                                Intent iMenu = new Intent(context, MenuBanAnActivity.class);
+                                iMenu.putExtra("maBan",maBan);
+                                context.startActivity(iMenu);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Toast.makeText(context, R.string.khongcoquyenthuchien, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }else {
+                    Toast.makeText(context, R.string.khongcoquyenthuchien, Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+        });
+
+
         return view;
     }
+
 
     private void hienButton(){
         viewHolderBanAn.imGoiMon.setVisibility(View.VISIBLE);

@@ -70,7 +70,7 @@ public class ThongKeFragment extends Fragment {
 
 
 
-        root.child("GoiMon").addValueEventListener(new ValueEventListener() {
+        root.child("GoiMon").orderByChild("tinhTrang").equalTo(true).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 thongKeGoiMonDTOList.clear();

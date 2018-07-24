@@ -30,7 +30,7 @@
 
         </activity>
 
-        <activity android:name=".ThemBanAnActivity" android:theme="@style/PopUpActivity">
+        <activity android:name=".ThemBanAnActivity" android:theme="@style/PopUpActivity" android:label="@string/thembanan">
 
         </activity>
         <activity android:name=".ThemThucDonActiivity">
@@ -73,6 +73,34 @@
 
         </activity>
         <activity android:name=".XacNhanDoiMatKhauActivity" android:label="@string/xacnhandoimatkhau" android:theme="@style/PopUpActivity">
+
+
+        </activity>
+        <activity android:name=".MenuBanAnActivity" android:label="@string/menubanan" android:theme="@style/PopUpActivity">
+
+
+        </activity>
+        <activity android:name=".XacNhanXoaBanAnActivity" android:label="@string/xacnhanxoabanan" android:theme="@style/PopUpActivity">
+
+
+        </activity>
+        <activity android:name=".SuaBanAnActivity" android:label="@string/suabanan" android:theme="@style/PopUpActivity">
+
+
+        </activity>
+        <activity android:name=".SuaLoaiMonAnActivity" android:label="@string/sualoaimonan" android:theme="@style/PopUpActivity">
+
+
+        </activity>
+        <activity android:name=".SuaMonAnActivity" android:label="@string/suamonan" >
+
+
+        </activity>
+        <activity android:name=".XacNhanXoaloaiActivity" android:label="@string/xacnhanxoaloai" android:theme="@style/PopUpActivity">
+
+
+        </activity>
+        <activity android:name=".XacNhanXoaMonAnActivity" android:label="@string/xacnhanxoamona" android:theme="@style/PopUpActivity">
 
 
         </activity>

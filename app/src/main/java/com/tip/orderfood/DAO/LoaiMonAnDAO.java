@@ -48,31 +48,33 @@ public class LoaiMonAnDAO {
     public void layHinhLoaiMonAn(String maLoai){
 
         final String ma = maLoai;
-        root.child(maLoai).child("hinhAnh").addValueEventListener(new ValueEventListener() {
+        root.child(maLoai).child("hinhAnh").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String hinh = dataSnapshot.getValue().toString();
-                if (hinh.equals("null")){
-                    FirebaseDatabase.getInstance().getReference().child("MonAn").orderByChild("maLoai").equalTo(ma).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            String hinhAnh ="";
+                if (dataSnapshot != null){
+                    String hinh = dataSnapshot.getValue().toString();
+                    if (hinh.equals("null")){
+                        FirebaseDatabase.getInstance().getReference().child("MonAn").orderByChild("maLoai").equalTo(ma).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String hinhAnh ="";
 
-                            for (DataSnapshot d: dataSnapshot.getChildren()){
-                                MonAnDTO monAnDTO = d.getValue(MonAnDTO.class);
-                                hinhAnh = monAnDTO.getHinhAnh();
-                                break;
+                                for (DataSnapshot d: dataSnapshot.getChildren()){
+                                    MonAnDTO monAnDTO = d.getValue(MonAnDTO.class);
+                                    hinhAnh = monAnDTO.getHinhAnh();
+                                    break;
+
+                                }
+                                if (!hinhAnh.equals("")){
+                                    root.child(ma).child("hinhAnh").setValue(hinhAnh);
+                                }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
                             }
-                            if (!hinhAnh.equals("")){
-                                root.child(ma).child("hinhAnh").setValue(hinhAnh);
-                            }
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                        });
+                    }
                 }
             }
 
@@ -81,7 +83,24 @@ public class LoaiMonAnDAO {
 
             }
         });
+    }
 
+    public void suaTenLoai(String maLoai, String tenLoai){
+        root.child(maLoai).child("tenLoai").setValue(tenLoai).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, R.string.suathanhcong, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void xoaLoai(String maLoai){
+        root.child(maLoai).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, R.string.xoathanhcong, Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 }

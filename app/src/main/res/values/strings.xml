@@ -32,11 +32,14 @@
     <string name="dong">Đóng</string>
     <string name="thembanan">Thêm bàn ăn</string>
     <string name="tenbanan">Tên bàn ăn</string>
+    <string name="suamonan">Sữa Món Ăn</string>
+    <string name="sualoaimonan">Sữa Loại Món Ăn</string>
     <string name="themthucdon">Thên thực đơn</string>
     <string name="tenmonan">Tên món ăn</string>
     <string name="giatien">Giá tiền</string>
     <string name="chitietgoimon">Chi Tiết Gọi Món</string>
     <string name="banan">Bàn ăn</string>
+    <string name="suabanan">Sữa Bàn ăn</string>
     <string name="loaithucdon">Loại thực đơn</string>
     <string name="tenloai">Tên loại</string>
     <string name="vuilongnhapdulieu">Vui lòng nhập dữ liệu !</string>
@@ -89,7 +92,15 @@
     <string name="thongbaoxacnhanthanhtoan">Thanh Toán Cho </string>
     <string name="hoanthanh">Hoàn Thành</string>
     <string name="langoi">Lần Gọi</string>
-    <string name="trong">0</string>
+    <string name="khongduocdetrong">Không Được Để Trống</string>
+    <string name="xacnhanxoaloai">Xác Nhận Xóa Loại Món Ăn!</string>
+    <string name="thongbaoxoaloai">Sẽ Xóa Tất Cả Dữ liệu Liên Quan Đến Loại Món Ăn Này</string>
+    <string name="xacnhanxoabanan">Xác Nhận Xóa Bàn Ăn!</string>
+    <string name="thongbaoxoamonan">Sẽ Xóa Tất Cả Dữ liệu Liên Quan Đến Món Ăn Này</string>
+    <string name="xacnhanxoamona">Xác Nhận Xóa Món Ăn!</string>
+    <string name="thongbaoxoabanan">Sẽ Xóa Tất Cả Dữ liệu Liên Quan Đến Bàn Này</string>
     <string name="menu">Menu</string>
+    <string name="menubanan">Menu Bàn Ăn</string>
     <string name="danhsachmondagoi">Danh Sách Gọi Món</string>
+    <string name="nhaptenban">Nhập Tên Bàn</string>
 </resources>

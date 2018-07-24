@@ -64,11 +64,9 @@ public class AdapterTopMonAn extends BaseAdapter {
 
         viewHolderHienThiDanhSachMonAn.txtTopTenMonAn.setText(monAnDTO.getTenMonAn());
         viewHolderHienThiDanhSachMonAn.txtTopGiaMonAn.setText(String.valueOf(monAnDTO.getGiaTien()));
-        if (monAnDTO.getLanGoi() > 0){
-            viewHolderHienThiDanhSachMonAn.txtTopLanGoi.setText(String.valueOf(monAnDTO.getLanGoi()));
-        } else {
-            viewHolderHienThiDanhSachMonAn.txtTopLanGoi.setText(R.string.trong);
-        }
+
+        viewHolderHienThiDanhSachMonAn.txtTopLanGoi.setText(String.valueOf(monAnDTO.getLanGoi()));
+
 
         Log.d("tenmonan",viewHolderHienThiDanhSachMonAn.txtTopTenMonAn.getText().toString());
         return view;

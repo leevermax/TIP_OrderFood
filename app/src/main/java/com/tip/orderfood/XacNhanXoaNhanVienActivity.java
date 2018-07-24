@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.tip.orderfood.DAO.GoiMonDAO;
 import com.tip.orderfood.DAO.NhanVienDAO;
 
 public class XacNhanXoaNhanVienActivity extends AppCompatActivity {
@@ -29,6 +30,8 @@ public class XacNhanXoaNhanVienActivity extends AppCompatActivity {
     Button btnXacNhanXoaNhanVien;
 
     String UIDxoa,UidHT;
+
+    GoiMonDAO goiMonDAO;
 
     DatabaseReference root;
 
@@ -45,6 +48,7 @@ public class XacNhanXoaNhanVienActivity extends AppCompatActivity {
         txtXacNhanXoaNhanVien = findViewById(R.id.txtXacNhanXoaNhanVien);
 
         nhanVienDAO = new NhanVienDAO(this);
+        goiMonDAO = new GoiMonDAO(this);
 
         root = FirebaseDatabase.getInstance().getReference().child("Users");
         mAuth = FirebaseAuth.getInstance();
@@ -53,9 +57,6 @@ public class XacNhanXoaNhanVienActivity extends AppCompatActivity {
         Intent intent = getIntent();
         UIDxoa = intent.getStringExtra("UID");
         UidHT = intent.getStringExtra("UidHT");
-        Log.d("UIDHT",UidHT);
-
-
 
         nhanVienDAO.layNhanVien(UIDxoa).getRef().child("hoTen").addValueEventListener(new ValueEventListener() {
             @Override
@@ -75,7 +76,8 @@ public class XacNhanXoaNhanVienActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                xoaUserVoiUid();
+            goiMonDAO.xoaGoiMMonTheoNV(UIDxoa);
+            xoaUserVoiUid();
 
             }
         });

@@ -7,9 +7,10 @@
     >
 
     <TextView
+        android:id="@+id/txtSuaMonAn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Thêm thực đơn"
+        android:text="@string/themthucdon"
         android:layout_gravity="center"
         android:textSize="@dimen/size18sp"
         android:textStyle="bold"
@@ -37,7 +38,7 @@
                 android:background="@color/colorWhite"
                 android:layout_margin="@dimen/size10dp"
                 android:padding="@dimen/size10dp"
-                android:hint="Tên món ăn"
+                android:hint="@string/tenmonan"
                 android:textColor="@color/colorGray"
                 android:textColorHint="@color/colorGray"
                 />
@@ -49,7 +50,7 @@
                 android:background="@color/colorWhite"
                 android:layout_margin="@dimen/size10dp"
                 android:padding="@dimen/size10dp"
-                android:hint="Giá tiền"
+                android:hint="@string/giatien"
                 android:textColor="@color/colorGray"
                 android:textColorHint="@color/colorGray"
                 android:numeric="integer"

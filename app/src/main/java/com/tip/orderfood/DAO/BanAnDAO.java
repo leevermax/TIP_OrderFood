@@ -54,4 +54,22 @@ public class BanAnDAO {
         root.child(maBan).child("tinhTrang").setValue(true);
         return true;
     }
+
+    public void suaTenBan(String maBan, String tenBan){
+        root.child(maBan).child("tenBan").setValue(tenBan).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, R.string.suathanhcong, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void xoaBanAn(String maBan){
+        root.child(maBan).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, R.string.xacnhanxoabanan, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

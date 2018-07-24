@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,8 +28,10 @@ import com.tip.orderfood.DAO.LoaiMonAnDAO;
 import com.tip.orderfood.DAO.NhanVienDAO;
 import com.tip.orderfood.DTO.LoaiMonAnDTO;
 import com.tip.orderfood.R;
+import com.tip.orderfood.SuaLoaiMonAnActivity;
 import com.tip.orderfood.ThemThucDonActiivity;
 import com.tip.orderfood.TrangChuActivity;
+import com.tip.orderfood.XacNhanXoaloaiActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +78,7 @@ public class HienThiThucDonFragment extends android.support.v4.app.Fragment {
                     loaiMonAnDTOS.add(loaiMonAnDTO);
                 }
                 adapterHienThiLoaiMonAnThucDon.notifyDataSetChanged();
+                registerForContextMenu(gvView);
             }
 
             @Override
@@ -168,5 +173,75 @@ public class HienThiThucDonFragment extends android.support.v4.app.Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        getActivity().getMenuInflater().inflate(R.menu.memu_context,menu);
+        menu.setHeaderTitle(R.string.menu);
+//        menu.setHeaderIcon();
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        final String maLoai = loaiMonAnDTOS.get(info.position).getMaLoai();
+        switch (item.getItemId()){
+                case R.id.itSua:
+                    if (user != null){
+                        Uid = user.getUid().toString();
+                        nhanVienDAO.kiemTraQuyen(Uid).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                int role = Integer.parseInt(dataSnapshot.getValue().toString());
+                                if(role == 1 || role == 2){
+                                    Intent iSuaLoai = new Intent(getActivity(), SuaLoaiMonAnActivity.class);
+                                    iSuaLoai.putExtra("maLoai",maLoai);
+                                    startActivity(iSuaLoai);
+                                } else {
+                                    Toast.makeText(getContext(), R.string.khongcoquyenthuchien, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    } else {
+                        Toast.makeText(getActivity(), R.string.khongcoquyenthuchien, Toast.LENGTH_SHORT).show();
+                    }
+
+                break;
+            case R.id.itXoa:
+                if (user != null){
+                    Uid = user.getUid().toString();
+                    nhanVienDAO.kiemTraQuyen(Uid).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            int role = Integer.parseInt(dataSnapshot.getValue().toString());
+                            if(role == 1 || role == 2){
+                                Intent iXacNhanXoaLoai = new Intent(getActivity(),XacNhanXoaloaiActivity.class);
+                                iXacNhanXoaLoai.putExtra("maLoai",maLoai);
+                                startActivity(iXacNhanXoaLoai);
+                            } else {
+                                Toast.makeText(getActivity(), R.string.khongcoquyenthuchien, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                } else {
+                    Toast.makeText(getActivity(), R.string.khongcoquyenthuchien, Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+        return super.onContextItemSelected(item);
     }
 }

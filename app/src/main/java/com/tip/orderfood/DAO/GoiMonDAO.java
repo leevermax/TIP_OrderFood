@@ -7,9 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.tip.orderfood.DTO.ChiTietGoiMonDTO;
 import com.tip.orderfood.DTO.GoiMonDTO;
 import com.tip.orderfood.Database.CreateDatabase;
@@ -44,5 +47,65 @@ public class GoiMonDAO {
     public Query layMaGoiMonTheoBan(String maBan){
         Query query = root.orderByChild("maBan").equalTo(maBan);
         return query;
+    }
+
+    public void xoaGoiMonTheoBan(String maBan){
+        root.orderByChild("maBan").equalTo(maBan).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                for (final DataSnapshot d: dataSnapshot.getChildren()){
+                    String maGoiMon = d.getKey();
+                    FirebaseDatabase.getInstance().getReference().child("ChiTietGoiMon").orderByChild("maGoiMon").equalTo(maGoiMon).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot2) {
+                            for (DataSnapshot d2: dataSnapshot2.getChildren()){
+                                FirebaseDatabase.getInstance().getReference().child("ChiTietGoiMon").child(d2.getKey()).removeValue();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                    root.child(maGoiMon).removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void xoaGoiMMonTheoNV(String UID){
+        root.orderByChild("maNhanVien").equalTo(UID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                for (final DataSnapshot d: dataSnapshot.getChildren()){
+                    String maGoiMon = d.getKey();
+                    FirebaseDatabase.getInstance().getReference().child("ChiTietGoiMon").orderByChild("maGoiMon").equalTo(maGoiMon).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot2) {
+                            for (DataSnapshot d2: dataSnapshot2.getChildren()){
+                                FirebaseDatabase.getInstance().getReference().child("ChiTietGoiMon").child(d2.getKey()).removeValue();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                    root.child(maGoiMon).removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

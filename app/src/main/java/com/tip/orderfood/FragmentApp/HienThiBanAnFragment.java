@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -64,6 +65,7 @@ public class HienThiBanAnFragment extends Fragment {
 
         adapterHienThiBanAn = new AdapterHienThiBanAn(getActivity(),R.layout.custom_layout_hienthibanan,banAnDTOList);
         gvHienThiBanAn.setAdapter(adapterHienThiBanAn);
+        registerForContextMenu(gvHienThiBanAn);
         banAnDAO.getlistban().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -73,9 +75,6 @@ public class HienThiBanAnFragment extends Fragment {
                     banAnDTO.setMaBan(d.getKey().toString());
                     banAnDTOList.add(banAnDTO);
                 }
-
-
-                registerForContextMenu(gvHienThiBanAn);
                 adapterHienThiBanAn.notifyDataSetChanged();
             }
 
@@ -84,6 +83,9 @@ public class HienThiBanAnFragment extends Fragment {
 
             }
         });
+
+
+
 
         return view;
     }
@@ -152,26 +154,5 @@ public class HienThiBanAnFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        getActivity().getMenuInflater().inflate(R.menu.memu_context,menu);
-        menu.setHeaderTitle(R.string.menu);
-//        menu.setHeaderIcon();
-        super.onCreateContextMenu(menu, v, menuInfo);
-    }
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        int vTri = gvHienThiBanAn.getSelectedItemPosition();
-        String maBan = banAnDTOList.get(vTri).getMaBan();
-        switch (item.getItemId()){
-            case R.id.itSua:
-
-                break;
-            case R.id.itXoa:
-
-                break;
-        }
-        return super.onContextItemSelected(item);
-    }
 }
