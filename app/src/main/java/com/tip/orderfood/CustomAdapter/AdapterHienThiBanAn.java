@@ -111,8 +111,12 @@ public class AdapterHienThiBanAn extends BaseAdapter implements View.OnClickList
 
         if (banAnDTO.isTinhTrang()){
             viewHolderBanAn.imBanAn.setImageResource(R.drawable.banantrue);
+            Animation animation = AnimationUtils.loadAnimation(context,R.anim.hieuung_hienthi_button_banan);
+            viewHolderBanAn.imBanAn.startAnimation(animation);
         } else {
             viewHolderBanAn.imBanAn.setImageResource(R.drawable.banan);
+            Animation animation = AnimationUtils.loadAnimation(context,R.anim.hieuung_activity_ra);
+            viewHolderBanAn.imBanAn.startAnimation(animation);
         }
 
 

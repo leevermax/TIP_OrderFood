@@ -72,7 +72,7 @@ public class AdapterNhaBep extends BaseAdapter {
         if (view == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             viewHolder = new ViewHolder();
-            view = inflater.inflate(R.layout.custom_layuot_nhabep,viewGroup,false);
+            view = inflater.inflate(R.layout.custom_layout_nhabep,viewGroup,false);
             viewHolder.txtTenBanAnBep = view.findViewById(R.id.txtTenBanAnBep);
             viewHolder.txtSoLuongBep = view.findViewById(R.id.txtSoLuongBep);
             viewHolder.txtTenMonAnBep = view.findViewById(R.id.txtTenMonAnBep);
@@ -138,34 +138,49 @@ public class AdapterNhaBep extends BaseAdapter {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 final boolean k = b;
-                if (user != null) {
-                    Uid = user.getUid().toString();
+                root.child(nhaBepDTO.getMaCT()).child("hoanThanh").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue(boolean.class) == true){
+                            if (user != null) {
+                                Uid = user.getUid().toString();
 
-                    nhanVienDAO.kiemTraQuyen(Uid).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            int role = Integer.parseInt(dataSnapshot.getValue().toString());
-                            if (role == 1 || role == 3) {
+                                nhanVienDAO.kiemTraQuyen(Uid).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        int role = Integer.parseInt(dataSnapshot.getValue().toString());
+                                        if (role == 1 || role == 3) {
 
-                                if (k) {
-                                    Intent intent = new Intent(context, XacNhanPhucVuActivity.class);
-                                    intent.putExtra("maCT", nhaBepDTO.getMaCT());
-                                    intent.putExtra("tenBan", nhaBepDTO.getTenBan());
-                                    context.startActivity(intent);
-                                }
+                                            if (k) {
+                                                Intent intent = new Intent(context, XacNhanPhucVuActivity.class);
+                                                intent.putExtra("maCT", nhaBepDTO.getMaCT());
+                                                intent.putExtra("tenBan", nhaBepDTO.getTenBan());
+                                                context.startActivity(intent);
+                                            }
+                                        } else {
+                                            Toast.makeText(context, R.string.khongcoquyenthuchien, Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
                             } else {
                                 Toast.makeText(context, R.string.khongcoquyenthuchien, Toast.LENGTH_SHORT).show();
                             }
+                        } else {
+                            Toast.makeText(context, R.string.thongbaochuahoanthanhmon, Toast.LENGTH_SHORT).show();
                         }
+                    }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                        }
-                    });
-                } else {
-                    Toast.makeText(context, R.string.khongcoquyenthuchien, Toast.LENGTH_SHORT).show();
-                }
+                    }
+                });
+
             }
         });
 

@@ -68,4 +68,25 @@ public class NhanVienDAO {
     public void doiMatKhau(String Uid,String enPass){
         root.child(Uid).child("matKhau").setValue(enPass);
     }
+
+    public void suaQuyenNhanVien(String idNV, String maQuyen){
+        root.child(idNV).child("maQuyen").setValue(maQuyen).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, R.string.suathanhcong, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void doiEmail(String idNV, String email){
+        root.child(idNV).child("email").setValue(email);
+    }
+    public void doiSDT(String idNV, String sdt){
+        root.child(idNV).child("phone").setValue(sdt).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context,R.string.thaydoithanhcong, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

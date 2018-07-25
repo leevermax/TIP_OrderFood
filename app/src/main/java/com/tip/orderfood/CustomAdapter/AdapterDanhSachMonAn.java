@@ -6,6 +6,8 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,13 +18,13 @@ import com.tip.orderfood.R;
 
 import java.util.List;
 
-public class AdapterHienThiDanhSachMonAn extends BaseAdapter {
+public class AdapterDanhSachMonAn extends BaseAdapter {
     Context context;
     int layout;
     List<MonAnDTO> monAnDTOList;
     ViewHolderHienThiDanhSachMonAn viewHolderHienThiDanhSachMonAn;
 
-    public AdapterHienThiDanhSachMonAn(Context context, int layout, List<MonAnDTO> monAnDTOList){
+    public AdapterDanhSachMonAn(Context context, int layout, List<MonAnDTO> monAnDTOList){
         this.context = context;
         this.layout = layout;
         this.monAnDTOList = monAnDTOList;
@@ -70,10 +72,13 @@ public class AdapterHienThiDanhSachMonAn extends BaseAdapter {
         String hinhanh = monAnDTO.getHinhAnh().toString();
         if(hinhanh == null || hinhanh.equals("")){
             viewHolderHienThiDanhSachMonAn.imHinhMonAn.setImageResource(R.drawable.backgroundheader1);
+
         }else{
 //            Uri uri = Uri.parse(hinhanh);
 //            viewHolderHienThiDanhSachMonAn.imHinhMonAn.setImageURI(uri);
             Picasso.get().load(hinhanh).into(viewHolderHienThiDanhSachMonAn.imHinhMonAn);
+            Animation animation = AnimationUtils.loadAnimation(context,R.anim.hieuung_hienthi_button_banan);
+            viewHolderHienThiDanhSachMonAn.imHinhMonAn.startAnimation(animation);
         }
 
         viewHolderHienThiDanhSachMonAn.txtTenMonAn.setText(monAnDTO.getTenMonAn());

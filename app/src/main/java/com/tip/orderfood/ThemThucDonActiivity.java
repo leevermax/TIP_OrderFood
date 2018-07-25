@@ -1,10 +1,8 @@
 package com.tip.orderfood;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -12,9 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -34,19 +30,17 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
-import com.tip.orderfood.CustomAdapter.AdapterHienThiLoaiMonAn;
+import com.tip.orderfood.CustomAdapter.AdapterSpinnerLoaiMonAn;
 import com.tip.orderfood.DAO.LoaiMonAnDAO;
 import com.tip.orderfood.DAO.MonAnDAO;
 import com.tip.orderfood.DTO.LoaiMonAnDTO;
 import com.tip.orderfood.DTO.MonAnDTO;
 import com.tip.orderfood.Support.SuaDuLieu;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.UUID;
 
 public class ThemThucDonActiivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -56,7 +50,7 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
     Spinner spinLoaiMonAn;
     LoaiMonAnDAO loaiMonAnDAO;
     List<LoaiMonAnDTO> loaiMonAnDTOS;
-    AdapterHienThiLoaiMonAn adapterHienThiLoaiMonAn;
+    AdapterSpinnerLoaiMonAn adapterSpinnerLoaiMonAn;
 
     MonAnDAO monAnDAO;
 
@@ -65,8 +59,6 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
     EditText edTenMonAn, edGiaTien;
 
     FirebaseStorage storage;
-    StorageReference mountainResult;
-    StorageReference  storageRef;
     private StorageReference mStorageRef;
     private StorageTask mUploadTask;
     Uri filePath;
@@ -101,7 +93,7 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
         root = FirebaseDatabase.getInstance().getReference();
 
         storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReferenceFromUrl("gs://orderfood-5d1b9.appspot.com");
+
         mStorageRef = storage.getReference("ImageThucDon");
 
 
@@ -121,8 +113,8 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
 
     private void hienThiSpinnerLoaiMonAn(){
 
-        adapterHienThiLoaiMonAn = new AdapterHienThiLoaiMonAn(ThemThucDonActiivity.this,R.layout.custom_layout_spinloaithucdon,loaiMonAnDTOS);
-        spinLoaiMonAn.setAdapter(adapterHienThiLoaiMonAn);
+        adapterSpinnerLoaiMonAn = new AdapterSpinnerLoaiMonAn(ThemThucDonActiivity.this,R.layout.custom_layout_spinloaithucdon,loaiMonAnDTOS);
+        spinLoaiMonAn.setAdapter(adapterSpinnerLoaiMonAn);
 
         loaiMonAnDAO.layDanhSachLoaiMonAn().addValueEventListener(new ValueEventListener() {
             @Override
@@ -133,7 +125,7 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
                     loaiMonAnDTO.setMaLoai(d.getKey().toString());
                     loaiMonAnDTOS.add(loaiMonAnDTO);
                 }
-                adapterHienThiLoaiMonAn.notifyDataSetChanged();
+                adapterSpinnerLoaiMonAn.notifyDataSetChanged();
             }
 
             @Override
@@ -228,7 +220,7 @@ public class ThemThucDonActiivity extends AppCompatActivity implements View.OnCl
 
         if (filePath != null) {
             Calendar calendar = Calendar.getInstance();
-            StorageReference fileReference = storageRef.child("image" + calendar.getTimeInMillis() + ".png");
+            StorageReference fileReference = mStorageRef.child("image" + calendar.getTimeInMillis() + ".png");
 
             mUploadTask = fileReference.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

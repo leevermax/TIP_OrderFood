@@ -31,7 +31,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-import com.tip.orderfood.CustomAdapter.AdapterHienThiLoaiMonAn;
+import com.tip.orderfood.CustomAdapter.AdapterSpinnerLoaiMonAn;
 import com.tip.orderfood.DAO.LoaiMonAnDAO;
 import com.tip.orderfood.DAO.MonAnDAO;
 import com.tip.orderfood.DTO.LoaiMonAnDTO;
@@ -53,7 +53,7 @@ public class SuaMonAnActivity extends AppCompatActivity implements View.OnClickL
     LoaiMonAnDAO loaiMonAnDAO;
     List<LoaiMonAnDTO> loaiMonAnDTOS;
 
-    AdapterHienThiLoaiMonAn adapterHienThiLoaiMonAn;
+    AdapterSpinnerLoaiMonAn adapterSpinnerLoaiMonAn;
 
     MonAnDAO monAnDAO;
 
@@ -64,8 +64,6 @@ public class SuaMonAnActivity extends AppCompatActivity implements View.OnClickL
     String maMonAn;
 
     FirebaseStorage storage;
-    StorageReference mountainResult;
-    StorageReference  storageRef;
     private StorageReference mStorageRef;
     private StorageTask mUploadTask;
     Uri filePath;
@@ -126,7 +124,6 @@ public class SuaMonAnActivity extends AppCompatActivity implements View.OnClickL
         root = FirebaseDatabase.getInstance().getReference();
 
         storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReferenceFromUrl("gs://orderfood-5d1b9.appspot.com");
         mStorageRef = storage.getReference("ImageThucDon");
 
         hienThiSpinnerLoaiMonAn();
@@ -140,8 +137,8 @@ public class SuaMonAnActivity extends AppCompatActivity implements View.OnClickL
 
     private void hienThiSpinnerLoaiMonAn() {
 
-        adapterHienThiLoaiMonAn = new AdapterHienThiLoaiMonAn(SuaMonAnActivity.this,R.layout.custom_layout_spinloaithucdon,loaiMonAnDTOS);
-        spinLoaiMonAn.setAdapter(adapterHienThiLoaiMonAn);
+        adapterSpinnerLoaiMonAn = new AdapterSpinnerLoaiMonAn(SuaMonAnActivity.this,R.layout.custom_layout_spinloaithucdon,loaiMonAnDTOS);
+        spinLoaiMonAn.setAdapter(adapterSpinnerLoaiMonAn);
 
         loaiMonAnDAO.layDanhSachLoaiMonAn().addValueEventListener(new ValueEventListener() {
             @Override
@@ -152,7 +149,7 @@ public class SuaMonAnActivity extends AppCompatActivity implements View.OnClickL
                     loaiMonAnDTO.setMaLoai(d.getKey().toString());
                     loaiMonAnDTOS.add(loaiMonAnDTO);
                 }
-                adapterHienThiLoaiMonAn.notifyDataSetChanged();
+                adapterSpinnerLoaiMonAn.notifyDataSetChanged();
             }
 
             @Override
@@ -240,7 +237,7 @@ public class SuaMonAnActivity extends AppCompatActivity implements View.OnClickL
 
         if (filePath != null) {
             Calendar calendar = Calendar.getInstance();
-            StorageReference fileReference = storageRef.child("image" + calendar.getTimeInMillis() + ".png");
+            StorageReference fileReference = mStorageRef.child("image" + calendar.getTimeInMillis() + ".png");
 
             mUploadTask = fileReference.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

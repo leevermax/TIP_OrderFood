@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,12 +14,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tip.orderfood.CustomAdapter.AdapterNhanVien;
 import com.tip.orderfood.DAO.NhanVienDAO;
@@ -32,7 +37,7 @@ import com.tip.orderfood.TrangChuActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HienThiNhanVienFragment extends Fragment
+public class NhanVienFragment extends Fragment
 {
 
     ListView lvViewNhanVien;
@@ -41,8 +46,10 @@ public class HienThiNhanVienFragment extends Fragment
     AdapterNhanVien adapterNhanVien;
 
 
+
     String Uid;
     FirebaseUser user;
+    DatabaseReference root;
 
     @Nullable
     @Override
@@ -53,6 +60,7 @@ public class HienThiNhanVienFragment extends Fragment
         lvViewNhanVien = view.findViewById(R.id.lvViewNhanVien);
         nhanVienDTOS = new ArrayList<>();
         nhanVienDAO = new NhanVienDAO(getActivity());
+        root = FirebaseDatabase.getInstance().getReference();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -63,11 +71,23 @@ public class HienThiNhanVienFragment extends Fragment
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot d: dataSnapshot.getChildren()){
-                    NhanVienDTO nhanVienDTO = d.getValue(NhanVienDTO.class);
+                    final NhanVienDTO nhanVienDTO = d.getValue(NhanVienDTO.class);
                     nhanVienDTO.setUid(d.getKey());
-                    nhanVienDTOS.add(nhanVienDTO);
+                    root.child("Quyen").child(nhanVienDTO.getMaQuyen()).child("tenQuyen").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            nhanVienDTO.setMaQuyen(dataSnapshot.getValue().toString());
+                            nhanVienDTOS.add(nhanVienDTO);
+                            adapterNhanVien.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
-                adapterNhanVien.notifyDataSetChanged();
             }
 
             @Override
@@ -76,9 +96,7 @@ public class HienThiNhanVienFragment extends Fragment
             }
         });
 
-        Bundle bundle = getArguments();
-        if(bundle !=  null){
-        }
+
         view.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {

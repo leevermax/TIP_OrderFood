@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tip.orderfood.DAO.GoiMonDAO;
 import com.tip.orderfood.DAO.NhanVienDAO;
+import com.tip.orderfood.Support.EnDeCryption;
 
 public class XacNhanXoaNhanVienActivity extends AppCompatActivity {
 
@@ -39,6 +40,7 @@ public class XacNhanXoaNhanVienActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     NhanVienDAO nhanVienDAO;
+    EnDeCryption enDeCryption;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +54,7 @@ public class XacNhanXoaNhanVienActivity extends AppCompatActivity {
 
         root = FirebaseDatabase.getInstance().getReference().child("Users");
         mAuth = FirebaseAuth.getInstance();
+        enDeCryption = new EnDeCryption();
 
 
         Intent intent = getIntent();
@@ -92,7 +95,7 @@ public class XacNhanXoaNhanVienActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String emailXoa = dataSnapshot.child("email").getValue(String.class);
                 String matKhauXoa = dataSnapshot.child("matKhau").getValue(String.class);
-                Log.d("UID",dataSnapshot.child("email").getValue(String.class));
+                matKhauXoa = enDeCryption.deCrypt(matKhauXoa);
                 dangNhap(emailXoa,matKhauXoa);
             }
 
@@ -125,6 +128,9 @@ public class XacNhanXoaNhanVienActivity extends AppCompatActivity {
                                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                                             String matKhauHT,emailHT;
                                                             matKhauHT = dataSnapshot.child("matKhau").getValue(String.class);
+
+                                                            matKhauHT = enDeCryption.deCrypt(matKhauHT);
+                                                            Log.d("matKhau",matKhauHT);
                                                             emailHT = dataSnapshot.child("email").getValue(String.class);
                                                             dangNhapLai(emailHT,matKhauHT);
                                                         }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -31,7 +30,7 @@ public class XacNhanDoiMatKhauActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_xacnhandoimatkhau);
+        setContentView(R.layout.layout_xacnhansuataikhoan);
 
         btnXacNhanDoiMatKhau = findViewById(R.id.btnXacNhanDoiMatKhau);
 
@@ -45,10 +44,7 @@ public class XacNhanDoiMatKhauActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null)
             pass = intent.getStringExtra("pass");
-        Log.d("pass",pass);
         final String enPass = enDeCryption.enCrypt(pass);
-        Log.d("enPass",enPass);
-        Log.d("dePass",enDeCryption.deCrypt(enPass));
 
         btnXacNhanDoiMatKhau.setOnClickListener(new View.OnClickListener() {
             @Override

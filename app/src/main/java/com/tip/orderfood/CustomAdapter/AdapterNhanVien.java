@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -78,21 +80,15 @@ public class AdapterNhanVien extends BaseAdapter {
 
         viewHolderNhanVien.txtTenNhanVien.setText(nhanVienDTO.getHoTen());
         viewHolderNhanVien.txtEmail.setText(nhanVienDTO.getEmail());
-        root.child("Quyen").child(nhanVienDTO.getMaQuyen()).child("tenQuyen").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                viewHolderNhanVien.txtViTri.setText(dataSnapshot.getValue().toString());
-            }
+        viewHolderNhanVien.txtViTri.setText(nhanVienDTO.getMaQuyen());
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-//
-//        Intent layITrangChu = ((TrangChuActivity)context).getIntent();
-//        final String emailHT = layITrangChu.getStringExtra("emailHT");
-//        final String matKhauHT = layITrangChu.getStringExtra("matKhauHT");
+        Animation animation = AnimationUtils.loadAnimation(context,R.anim.hieuung_hienthi_button_banan);
+        viewHolderNhanVien.txtTenNhanVien.startAnimation(animation);
+        viewHolderNhanVien.txtEmail.startAnimation(animation);
+        viewHolderNhanVien.imHinhNhanVien.startAnimation(animation);
+        viewHolderNhanVien.txtViTri.startAnimation(animation);
+
 
         viewHolderNhanVien.imHinhNhanVien.setOnClickListener(new View.OnClickListener() {
             @Override

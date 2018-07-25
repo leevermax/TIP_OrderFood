@@ -21,14 +21,14 @@ import com.tip.orderfood.R;
 
 import java.util.List;
 
-public class AdapterHienThiLoaiMonAnThucDon extends BaseAdapter {
+public class AdapterDanhSachLoaiMonAn extends BaseAdapter {
     Context context;
     int layout;
     List<LoaiMonAnDTO> loaiMonAnDTOList;
     ViewHolderHienThiLoaiThucDon viewHolderHienThiLoaiThucDon;
     LoaiMonAnDAO loaiMonAnDAO;
 
-    public AdapterHienThiLoaiMonAnThucDon(Context context, int layout, List<LoaiMonAnDTO> loaiMonAnDTOList){
+    public AdapterDanhSachLoaiMonAn(Context context, int layout, List<LoaiMonAnDTO> loaiMonAnDTOList){
         this.context = context;
         this.layout = layout;
         this.loaiMonAnDTOList = loaiMonAnDTOList;

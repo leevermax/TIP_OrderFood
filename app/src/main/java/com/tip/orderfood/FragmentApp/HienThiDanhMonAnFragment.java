@@ -19,13 +19,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.tip.orderfood.CustomAdapter.AdapterHienThiDanhSachMonAn;
+import com.tip.orderfood.CustomAdapter.AdapterDanhSachMonAn;
 import com.tip.orderfood.DAO.MonAnDAO;
 import com.tip.orderfood.DAO.NhanVienDAO;
 import com.tip.orderfood.DTO.MonAnDTO;
 import com.tip.orderfood.R;
 import com.tip.orderfood.SoLuongActivity;
-import com.tip.orderfood.SuaLoaiMonAnActivity;
 import com.tip.orderfood.SuaMonAnActivity;
 import com.tip.orderfood.XacNhanXoaMonAnActivity;
 
@@ -37,7 +36,7 @@ public class HienThiDanhMonAnFragment extends android.support.v4.app.Fragment {
     GridView gridView;
     MonAnDAO monAnDAO;
     List<MonAnDTO> monAnDTOS;
-    AdapterHienThiDanhSachMonAn adapterHienThiDanhSachMonAn;
+    AdapterDanhSachMonAn adapterDanhSachMonAn;
     String maBan, maGoiMon;
     NhanVienDAO nhanVienDAO;
     String Uid;
@@ -60,8 +59,8 @@ public class HienThiDanhMonAnFragment extends android.support.v4.app.Fragment {
             maGoiMon = bundle.getString("maGoiMon");
             final String maloai = bundle.getString("maLoai");
             maBan = bundle.getString("maBan");
-            adapterHienThiDanhSachMonAn = new AdapterHienThiDanhSachMonAn(getActivity(),R.layout.custom_layout_hienthidanhsachmonan,monAnDTOS);
-            gridView.setAdapter(adapterHienThiDanhSachMonAn);
+            adapterDanhSachMonAn = new AdapterDanhSachMonAn(getActivity(),R.layout.custom_layout_hienthidanhsachmonan,monAnDTOS);
+            gridView.setAdapter(adapterDanhSachMonAn);
             monAnDAO.LayDanhSachMonAnTheoLoai(maloai).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -71,7 +70,7 @@ public class HienThiDanhMonAnFragment extends android.support.v4.app.Fragment {
                         monAnDTOS.add(monAnDTO);
                     }
                     registerForContextMenu(gridView);
-                    adapterHienThiDanhSachMonAn.notifyDataSetChanged();
+                    adapterDanhSachMonAn.notifyDataSetChanged();
                 }
 
                 @Override

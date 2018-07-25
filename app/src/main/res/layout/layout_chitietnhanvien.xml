@@ -19,7 +19,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size40dp"
+        android:layout_marginTop="@dimen/size25dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="@dimen/size100dp"
@@ -168,9 +168,55 @@
 
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/llSuaQuyen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size40dp"
+        android:layout_marginTop="@dimen/size25dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="@dimen/size5dp"
+            >
+
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/thaydoiquyen"
+                android:textColor="@color/colorPrimary"
+                android:padding="@dimen/size5dp"
+                android:textSize="@dimen/size18sp"
+                android:textStyle="bold"
+                android:layout_marginRight="@dimen/size5dp"/>
+            <Spinner
+                android:id="@+id/spinQuyen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/backgroundStart"
+
+                >
+
+            </Spinner>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSuaQuyenNV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/size10dp"
+            android:text="@string/dongy" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size10dp"
         android:orientation="horizontal">
         <Button
             android:id="@+id/btnThoatCT"

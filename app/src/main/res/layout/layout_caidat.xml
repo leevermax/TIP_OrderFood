@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/size28sp"
         android:text="@string/dangky"
+        android:drawableLeft="@drawable/nhanvien"
         android:textStyle="bold"
         android:padding="@dimen/size5dp"
         android:gravity="center"
@@ -23,7 +24,55 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <EditText
+            android:id="@+id/edEmailCD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email"
+            android:textColor="@color/colorGray"
+            android:padding="@dimen/size5dp"
+            android:layout_margin="@dimen/size5dp"
+            android:background="@color/colorWhite"
+            android:textColorHint="@color/colorGray"
+            android:drawableLeft="@drawable/email"
+            android:drawablePadding="@dimen/size5dp"
+            android:singleLine="true"
+            />
 
+        <Button
+            android:id="@+id/btnDoiEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/doiemail"
+            android:padding="@dimen/size5dp"
+            android:layout_margin="@dimen/size5dp"
+            android:background="@color/colorPrimary"
+            android:textStyle="bold"/>
+        <EditText
+            android:id="@+id/edSDTlCD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/sodienthoai"
+            android:textColor="@color/colorGray"
+            android:padding="@dimen/size5dp"
+            android:layout_margin="@dimen/size5dp"
+            android:background="@color/colorWhite"
+            android:textColorHint="@color/colorGray"
+            android:drawableLeft="@drawable/telephone"
+            android:drawablePadding="@dimen/size5dp"
+            android:singleLine="true"
+            android:numeric="integer"
+        />
+
+        <Button
+            android:id="@+id/btnDoiSDT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/doisodienthoai"
+            android:padding="@dimen/size5dp"
+            android:layout_margin="@dimen/size5dp"
+            android:background="@color/colorPrimary"
+            android:textStyle="bold"/>
         <EditText
             android:id="@+id/edMatKhauCD"
             android:layout_width="match_parent"

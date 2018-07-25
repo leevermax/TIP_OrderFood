@@ -5,13 +5,15 @@
     <string name="nhapmatkhaumoi">Mật khẩu Mới</string>
     <string name="matkhaunhaplai">Mật Khẩu Nhập Lại</string>
     <string name="ngaysinh">Ngày sinh</string>
+    <string name="doisodienthoai">Đổi Số Điện Thoại</string>
     <string name="sodienthoai">Số Điện Thoại</string>
     <string name="gtNam">Nam</string>
     <string name="gtNu">Nữ</string>
     <string name="giotinh">Giớ Tính</string>
     <string name="chungminhandan">Chứng minh nhân dân</string>
-    <string name="cmnd">CMMND</string>
+    <string name="cmnd">CMND</string>
     <string name="dongy">Đồng ý</string>
+    <string name="thaydoiquyen">Thay Đổi Quyền</string>
     <string name="thoat">Thoát</string>
     <string name="xacnhan">Xác Nhận</string>
     <string name="xacnhangaomom">Xác Nhận Giao Món cho Khách</string>
@@ -19,6 +21,7 @@
     <string name="dangky">Đăng ký</string>
     <string name="loinhaptendangnhap">Vui lòng nhập tên đăng nhập !</string>
     <string name="doimatkhauthanhcong">Đổi Mật Khẩu Thành Cồng</string>
+    <string name="doiemail">Đổi Email</string>
     <string name="doimatkhau">Đổi Mật Khẩu</string>
     <string name="loinhapmatkhau">Vui lòng nhập mật khẩu !</string>
     <string name="themthanhcong">Thêm thành công !</string>
@@ -56,6 +59,9 @@
     <string name="loidangnhaplai">Lỗi Đăng Nhập Lại </string>
     <string name="xacnhanxoanhanvien">Xác Nhân Xóa nhân viên........</string>
     <string name="xacnhandoimatkhau">Xác Nhân Thay Đổi Mật Khẩu</string>
+    <string name="xacnhandoidoisdt">Xác Nhân Thay Đổi Số Điện Thoại</string>
+    <string name="xacnhandoidoiemail">Xác Nhân Thay Đổi Email</string>
+    <string name="thaydoithanhcong">Thay Đổi Thành Công</string>
     <string name="xoanhanvien">Xóa nhân viên</string>
     <string name="xoathanhcong">Xóa thành công !</string>
     <string name="suathanhcong">Sữa thàng công !</string>
@@ -76,6 +82,7 @@
     <string name="email">Email</string>
     <string name="hoten">Họ Và Tên</string>
     <string name="themthongtin">Thêm Thông Tin</string>
+    <string name="thongbaochuahoanthanhmon">Món Ăn Chưa Hoàn Thành Không Thể Phục Vụ</string>
     <string name="phucvu">Phục Vụ</string>
     <string name="matkhaukhongtrung">Mật Khẩu Không Trùng Khớp</string>
     <string name="emailempty">Không Được Bỏ Trống Email</string>

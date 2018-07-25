@@ -42,7 +42,7 @@
             android:layout_margin="@dimen/size5dp"
             android:background="@color/colorWhite"
             android:textColorHint="@color/colorGray"
-            android:drawableLeft="@drawable/user"
+            android:drawableLeft="@drawable/email"
             android:drawablePadding="@dimen/size5dp"
             android:singleLine="true"
             />

@@ -1,26 +1,21 @@
 package com.tip.orderfood;
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,12 +25,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.tip.orderfood.DAO.NhanVienDAO;
 import com.tip.orderfood.FragmentApp.CaiDatFragmet;
 import com.tip.orderfood.FragmentApp.HienThiBanAnFragment;
-import com.tip.orderfood.FragmentApp.HienThiNhanVienFragment;
+import com.tip.orderfood.FragmentApp.NhanVienFragment;
 import com.tip.orderfood.FragmentApp.HienThiThucDonFragment;
 import com.tip.orderfood.FragmentApp.NhaBepFragment;
 import com.tip.orderfood.FragmentApp.ThongKeFragment;
-
-import java.io.FileInputStream;
 
 public class TrangChuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawerLayout;
@@ -134,12 +127,12 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
         if (k != 0){
 
 
-            HienThiNhanVienFragment hienThiNhanVienFragment = new HienThiNhanVienFragment();
+            NhanVienFragment nhanVienFragment = new NhanVienFragment();
             Bundle bundle = new Bundle();
-            hienThiNhanVienFragment.setArguments(bundle);
+            nhanVienFragment.setArguments(bundle);
 
             FragmentTransaction tranNhanVien = fragmentManager.beginTransaction();
-            tranNhanVien.replace(R.id.content,hienThiNhanVienFragment).addToBackStack("trangchu");
+            tranNhanVien.replace(R.id.content, nhanVienFragment).addToBackStack("trangchu");
             tranNhanVien.commit();
 
             MenuItem nav_itemNhanVien = menuNav.findItem(R.id.itNhanVien);
@@ -220,6 +213,7 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
         if (user != null){
             FragmentTransaction tranThongKe = fragmentManager.beginTransaction();
             ThongKeFragment thongKeFragment = new ThongKeFragment();
+            tranThongKe.setCustomAnimations(R.anim.hieuung_activity_vao,R.anim.hieuung_activity_ra);
             tranThongKe.replace(R.id.content,thongKeFragment).addToBackStack("trangchu");
             tranThongKe.commit();
         } else {
@@ -231,20 +225,23 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
     private void showBep() {
         FragmentTransaction tranNhaBep = fragmentManager.beginTransaction();
         NhaBepFragment  nhaBepFragment = new NhaBepFragment();
+        tranNhaBep.setCustomAnimations(R.anim.hieuung_activity_vao,R.anim.hieuung_activity_ra);
         tranNhaBep.replace(R.id.content,nhaBepFragment).addToBackStack("trangchu");
         tranNhaBep.commit();
     }
 
     private void showNhanVien() {
-        HienThiNhanVienFragment hienThiNhanVienFragment = new HienThiNhanVienFragment();
+        NhanVienFragment nhanVienFragment = new NhanVienFragment();
         FragmentTransaction tranNhanVien = fragmentManager.beginTransaction();
-        tranNhanVien.replace(R.id.content,hienThiNhanVienFragment).addToBackStack("trangchu");
+        tranNhanVien.setCustomAnimations(R.anim.hieuung_activity_vao,R.anim.hieuung_activity_ra);
+        tranNhanVien.replace(R.id.content, nhanVienFragment).addToBackStack("trangchu");
         tranNhanVien.commit();
     }
 
     private void showBanAn() {
         FragmentTransaction tranHienThiBanAn = fragmentManager.beginTransaction();
         HienThiBanAnFragment hienThiBanAnFragment = new HienThiBanAnFragment();
+        tranHienThiBanAn.setCustomAnimations(R.anim.hieuung_activity_vao,R.anim.hieuung_activity_ra);
         tranHienThiBanAn.replace(R.id.content,hienThiBanAnFragment);
         tranHienThiBanAn.commit();
     }
@@ -252,6 +249,7 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
     private void showThucDon() {
         FragmentTransaction tranHienThiThucDon = fragmentManager.beginTransaction();
         HienThiThucDonFragment hienThiThucDonFragment = new HienThiThucDonFragment();
+        tranHienThiThucDon.setCustomAnimations(R.anim.hieuung_activity_vao,R.anim.hieuung_activity_ra);
         tranHienThiThucDon.replace(R.id.content,hienThiThucDonFragment).addToBackStack("trangchu");
         tranHienThiThucDon.commit();
     }

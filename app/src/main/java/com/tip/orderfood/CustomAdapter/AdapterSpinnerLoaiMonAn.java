@@ -13,13 +13,13 @@ import com.tip.orderfood.R;
 
 import java.util.List;
 
-public class AdapterHienThiLoaiMonAn extends BaseAdapter {
+public class AdapterSpinnerLoaiMonAn extends BaseAdapter {
 
     Context context;
     int layout;
     List<LoaiMonAnDTO> loaiMonAnDTOList;
     ViewHolderLoaiMonAn viewHolderLoaiMonAn;
-    public AdapterHienThiLoaiMonAn(Context context, int layout, List<LoaiMonAnDTO> loaiMonAnDTOList){
+    public AdapterSpinnerLoaiMonAn(Context context, int layout, List<LoaiMonAnDTO> loaiMonAnDTOList){
         this.context = context;
         this.layout =layout;
         this.loaiMonAnDTOList = loaiMonAnDTOList;

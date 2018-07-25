@@ -104,6 +104,15 @@
 
 
         </activity>
+        <activity android:name=".XacNhanDoiEmailActiviry" android:label="@string/xacnhandoidoiemail" android:theme="@style/PopUpActivity">
+
+
+        </activity>
+
+        <activity android:name=".XacNhanDoiSDTActivity" android:label="@string/xacnhandoidoisdt" android:theme="@style/PopUpActivity">
+
+
+        </activity>
     </application>
 
 </manifest>

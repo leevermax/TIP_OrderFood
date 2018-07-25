@@ -104,6 +104,7 @@ public class DangNhapActivity extends AppCompatActivity implements View.OnClickL
                             iTrangChu.putExtra("emailHT",sTenDN);
                             iTrangChu.putExtra("matKhauHT",sMatKhau);
                             startActivity(iTrangChu);
+                            overridePendingTransition(R.anim.hieuung_activity_vao,R.anim.hieuung_activity_ra);
                         } else {
 
                             Toast.makeText(DangNhapActivity.this, getResources().getString(R.string.dangnhapthatbai),

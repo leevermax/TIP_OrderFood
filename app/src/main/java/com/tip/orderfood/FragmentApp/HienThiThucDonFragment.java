@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -23,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.tip.orderfood.CustomAdapter.AdapterHienThiLoaiMonAnThucDon;
+import com.tip.orderfood.CustomAdapter.AdapterDanhSachLoaiMonAn;
 import com.tip.orderfood.DAO.LoaiMonAnDAO;
 import com.tip.orderfood.DAO.NhanVienDAO;
 import com.tip.orderfood.DTO.LoaiMonAnDTO;
@@ -42,7 +41,7 @@ public class HienThiThucDonFragment extends android.support.v4.app.Fragment {
     List<LoaiMonAnDTO> loaiMonAnDTOS;
     LoaiMonAnDAO loaiMonAnDAO;
     FragmentManager fragmentManager;
-    AdapterHienThiLoaiMonAnThucDon adapterHienThiLoaiMonAnThucDon;
+    AdapterDanhSachLoaiMonAn adapterDanhSachLoaiMonAn;
     NhanVienDAO nhanVienDAO;
     String maBan, maGoiMon;
     String Uid;
@@ -65,8 +64,8 @@ public class HienThiThucDonFragment extends android.support.v4.app.Fragment {
 
         loaiMonAnDAO = new LoaiMonAnDAO(getActivity());
 
-        adapterHienThiLoaiMonAnThucDon = new AdapterHienThiLoaiMonAnThucDon(getActivity(),R.layout.custom_layout_hienloaimonan,loaiMonAnDTOS);
-        gvView.setAdapter(adapterHienThiLoaiMonAnThucDon);
+        adapterDanhSachLoaiMonAn = new AdapterDanhSachLoaiMonAn(getActivity(),R.layout.custom_layout_hienloaimonan,loaiMonAnDTOS);
+        gvView.setAdapter(adapterDanhSachLoaiMonAn);
         loaiMonAnDAO.layDanhSachLoaiMonAn().addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -77,7 +76,7 @@ public class HienThiThucDonFragment extends android.support.v4.app.Fragment {
                     loaiMonAnDTO.setMaLoai(d.getKey().toString());
                     loaiMonAnDTOS.add(loaiMonAnDTO);
                 }
-                adapterHienThiLoaiMonAnThucDon.notifyDataSetChanged();
+                adapterDanhSachLoaiMonAn.notifyDataSetChanged();
                 registerForContextMenu(gvView);
             }
 
