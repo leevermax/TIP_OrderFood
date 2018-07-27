@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/size1dp"
+        android:background="@color/backgroundDangNhap"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tenmonan"
+            android:layout_weight="1"
+            android:textSize="@dimen/size6sp"
+            android:textStyle="bold"
+
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/soluong"
+            android:layout_weight="1"
+            android:textSize="@dimen/size6sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/giatien"
+            android:layout_weight="1"
+            android:textSize="@dimen/size6sp"
+            android:textStyle="bold"
+            />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lvThanhToan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:numColumns="1"
+        >
+
+    </ListView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tongtien"
+            android:layout_marginLeft="@dimen/size2dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/size6sp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            />
+        <TextView
+            android:id="@+id/txtTongTien"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size1dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/size6sp"
+            android:layout_marginRight="@dimen/size1dp"
+            android:layout_weight="15"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnThoatThanhToan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/thoat"
+            android:textSize="@dimen/size6sp"
+            android:background="@color/colorOrgan"
+            android:layout_margin="@dimen/size1dp"
+            />
+        <Button
+            android:id="@+id/btnThanhToan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:text="@string/thanhtoan"
+            android:textSize="@dimen/size6sp"
+            android:layout_margin="@dimen/size1dp"
+            />
+
+
+
+    </LinearLayout>
+</LinearLayout>

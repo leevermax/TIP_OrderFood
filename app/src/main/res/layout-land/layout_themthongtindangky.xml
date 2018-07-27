@@ -17,7 +17,6 @@
         android:layout_height="wrap_content"
         android:text="@string/themthongtin"
         android:textColor="@color/colorPink"
-        android:layout_above="@+id/lnKhungDangKy"
         android:layout_centerHorizontal="true"
         android:padding="@dimen/size5dp"
         android:layout_margin="@dimen/size10dp"
@@ -31,17 +30,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/size80dp"
         >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:orientation="horizontal">
+
             <EditText
                 android:id="@+id/edHoTenDK"
-                android:layout_width="@dimen/size0dp"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
                 android:hint="@string/hoten"
@@ -49,16 +48,14 @@
                 android:padding="@dimen/size5dp"
                 android:layout_margin="@dimen/size5dp"
                 android:drawableLeft="@drawable/user"
-                android:drawablePadding="@dimen/size10dp"
+                android:drawablePadding="@dimen/size5dp"
                 android:textColor="@color/colorGray"
                 android:singleLine="true"
+                android:layout_weight="1"
                 />
-
-
             <EditText
                 android:id="@+id/edSoDienThoaiDK"
-                android:layout_width="@dimen/size0dp"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:numeric="integer"
                 android:background="@color/colorWhite"
@@ -69,20 +66,18 @@
                 android:drawableLeft="@drawable/telephone"
                 android:drawablePadding="@dimen/size10dp"
                 android:textColor="@color/colorGray"
+                android:layout_weight="1"
                 />
-
         </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
+        android:orientation="horizontal">
         <LinearLayout
-            android:layout_width="@dimen/size0dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_weight="1"
             android:layout_margin="@dimen/size5dp"
             >
 
@@ -110,11 +105,10 @@
 
         <RadioGroup
             android:id="@+id/rgGioiTinh"
-            android:layout_width="@dimen/size0dp"
-            android:padding="@dimen/size5dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_weight="1"
             >
 
             <RadioButton
@@ -135,19 +129,16 @@
         </RadioGroup>
 
 
-    </LinearLayout>
 
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        >
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/edNgaySinhDK"
-            android:layout_width="@dimen/size0dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="date"
@@ -159,19 +150,20 @@
             android:drawableLeft="@android:drawable/ic_menu_my_calendar"
             android:drawablePadding="@dimen/size10dp"
             android:textColor="@color/colorGray"
+            android:layout_weight="1"
             />
 
 
         <EditText
             android:id="@+id/edCMNDDK"
-            android:layout_width="@dimen/size0dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/size5dp"
             android:background="@color/colorWhite"
             android:drawableLeft="@drawable/idcard"
             android:drawablePadding="@dimen/size10dp"
             android:hint="@string/chungminhandan"
+            android:layout_weight="1"
             android:maxLength="15"
             android:numeric="integer"
             android:padding="@dimen/size5dp"
@@ -179,6 +171,7 @@
             android:textColorHint="@color/colorGray" />
 
     </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"

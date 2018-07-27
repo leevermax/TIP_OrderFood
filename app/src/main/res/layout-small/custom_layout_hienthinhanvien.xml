@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGreen"
+    >
+
+    <ImageView
+        android:id="@+id/imHinhNhanVien"
+        android:layout_width="@dimen/size30dp"
+        android:layout_height="@dimen/size30dp"
+        android:src="@drawable/nhanvien"
+        android:layout_margin="@dimen/size2dp"
+        />
+
+    <TextView
+        android:id="@+id/txtTenNhanVien"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tên nhân viên"
+        android:layout_toRightOf="@+id/imHinhNhanVien"
+        android:layout_marginTop="@dimen/size2dp"
+        android:textSize="@dimen/size10sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorOrgan"
+        />
+    <TextView
+        android:id="@+id/txtViTri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/imHinhNhanVien"
+        android:layout_marginTop="@dimen/size2dp"
+        android:textSize="@dimen/size6sp"
+        android:layout_below="@+id/txtTenNhanVien"
+        />
+    <TextView
+    android:id="@+id/txtEmail"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_toRightOf="@+id/imHinhNhanVien"
+    android:layout_marginTop="@dimen/size1dp"
+    android:textSize="@dimen/size6sp"
+    android:layout_below="@+id/txtViTri"
+    />
+
+</RelativeLayout>

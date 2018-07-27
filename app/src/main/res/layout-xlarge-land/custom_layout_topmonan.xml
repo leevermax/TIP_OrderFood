@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="@color/colorWhite">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/backgroundtransparentGreen"
+        android:orientation="horizontal"
+        android:padding="@dimen/size10dp"
+        android:weightSum="7">
+
+        <TextView
+            android:id="@+id/txtTopTenMonAn"
+            android:layout_width="@dimen/size0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="@string/magoimon"
+            android:textSize="@dimen/size38sp"
+            android:textColor="@color/colorOrgan"
+            />
+
+        <TextView
+            android:id="@+id/txtTopGiaMonAn"
+            android:layout_width="0dp"
+            android:textColor="@color/colorOrgan"
+            android:textSize="@dimen/size38sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/ngaygoimon"/>
+
+        <TextView
+            android:id="@+id/txtTopLanGoi"
+            android:layout_width="@dimen/size0dp"
+            android:textSize="@dimen/size38sp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorOrgan"
+            android:layout_weight="2"
+            android:text="@string/tongtien"/>
+
+    </LinearLayout>
+</LinearLayout>

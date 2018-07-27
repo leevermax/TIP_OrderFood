@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/edSuaTenBanAn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size1dp"
+        android:hint="@string/tenbanan"
+        android:maxLength="10"
+        android:padding="@dimen/size1dp"
+        android:singleLine="true"
+        android:textSize="@dimen/size6sp"
+        android:textColor="@color/colorGray"
+        android:textColorHint="@color/colorGray" />
+    <Button
+        android:id="@+id/btnDongYSuaBanAn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="@dimen/size6sp"
+        android:text="@string/dongy"/>
+</LinearLayout>
