@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:background="@color/backgroundDangNhap"
         android:orientation="horizontal"
-        android:padding="@dimen/size10dp"
+        android:padding="@dimen/size5dp"
         android:weightSum="7">
 
         <TextView

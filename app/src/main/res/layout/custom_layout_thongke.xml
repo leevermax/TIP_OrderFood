@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:background="@color/backgroundtransparentGreen"
         android:orientation="horizontal"
-        android:padding="@dimen/size5dp"
+        android:layout_marginTop="@dimen/size1dp"
         android:weightSum="7">
 
         <TextView
@@ -19,9 +19,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="@string/magoimon"
+            android:background="@color/colorPink"
             android:textSize="@dimen/size12sp"
             android:layout_margin="@dimen/size5dp"
-            android:textColor="@color/colorPink"
+            android:textColor="@color/colorPrimary"
             />
 
         <TextView

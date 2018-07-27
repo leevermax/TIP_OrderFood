@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/backgroundtransparentGreen">
+
+    <TextView
+        android:id="@+id/txtTenNhanVienCD"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/size28sp"
+        android:text="@string/dangky"
+        android:drawableLeft="@drawable/nhanvien"
+        android:textStyle="bold"
+        android:padding="@dimen/size5dp"
+        android:gravity="center"
+        android:textColor="@color/colorOrgan"
+        android:layout_marginBottom="@dimen/size25dp"
+        android:layout_marginTop="@dimen/size10dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edEmailCD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:textColor="@color/colorGray"
+                android:padding="@dimen/size5dp"
+                android:layout_margin="@dimen/size5dp"
+                android:background="@color/colorWhite"
+                android:textColorHint="@color/colorGray"
+                android:drawableLeft="@drawable/email"
+                android:drawablePadding="@dimen/size5dp"
+                android:singleLine="true"
+                />
+
+            <Button
+                android:id="@+id/btnDoiEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/doiemail"
+                android:padding="@dimen/size5dp"
+                android:layout_margin="@dimen/size5dp"
+                android:background="@color/colorPrimary"
+                android:textStyle="bold"/>
+            <EditText
+                android:id="@+id/edSDTlCD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/sodienthoai"
+                android:textColor="@color/colorGray"
+                android:padding="@dimen/size5dp"
+                android:layout_margin="@dimen/size5dp"
+                android:background="@color/colorWhite"
+                android:textColorHint="@color/colorGray"
+                android:drawableLeft="@drawable/telephone"
+                android:drawablePadding="@dimen/size5dp"
+                android:singleLine="true"
+                android:numeric="integer"
+                />
+
+            <Button
+                android:id="@+id/btnDoiSDT"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/doisodienthoai"
+                android:padding="@dimen/size5dp"
+                android:layout_margin="@dimen/size5dp"
+                android:background="@color/colorPrimary"
+                android:textStyle="bold"/>
+            <EditText
+                android:id="@+id/edMatKhauCD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/nhapmatkhaumoi"
+                android:textColor="@color/colorGray"
+                android:padding="@dimen/size5dp"
+                android:layout_margin="@dimen/size5dp"
+                android:background="@color/colorWhite"
+                android:textColorHint="@color/colorGray"
+                android:drawableLeft="@drawable/password"
+                android:drawablePadding="@dimen/size5dp"
+                android:singleLine="true"
+                android:password="true"
+                />
+            <EditText
+                android:id="@+id/edReMatKhauCD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/matkhaunhaplai"
+                android:textColor="@color/colorGray"
+                android:padding="@dimen/size5dp"
+                android:layout_margin="@dimen/size5dp"
+                android:background="@color/colorWhite"
+                android:textColorHint="@color/colorGray"
+                android:drawableLeft="@drawable/password"
+                android:drawablePadding="@dimen/size5dp"
+                android:singleLine="true"
+                android:password="true"
+                />
+
+            <Button
+                android:id="@+id/btnDoiMatKhau"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/doimatkhau"
+                android:padding="@dimen/size5dp"
+                android:layout_margin="@dimen/size5dp"
+                android:background="@color/colorPrimary"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
