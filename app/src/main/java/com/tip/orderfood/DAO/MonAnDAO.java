@@ -42,7 +42,8 @@ public class MonAnDAO {
     }
     public void suaMonAn(String maMonAn,MonAnDTO monAnDTO){
 
-        root.child(maMonAn).setValue(monAnDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
+        root.child(maMonAn).child("tenMonAn").setValue(monAnDTO.getTenMonAn());
+        root.child(maMonAn).child("giaTien").setValue(monAnDTO.getGiaTien()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(context, R.string.suathanhcong, Toast.LENGTH_SHORT).show();

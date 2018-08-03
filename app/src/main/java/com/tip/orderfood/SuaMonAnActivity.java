@@ -180,20 +180,24 @@ public class SuaMonAnActivity extends AppCompatActivity implements View.OnClickL
                 String tenmonan = edTenMonAn.getText().toString();
                 SuaDuLieu suaDuLieu = new SuaDuLieu();
                 tenmonan = suaDuLieu.toiUuChuoi(tenmonan);
-                int giatien = Integer.parseInt(edGiaTien.getText().toString());
-                if(tenmonan.length() == 0 || TextUtils.isEmpty(edGiaTien.getText().toString()) || tenmonan.equals("")){
+
+                String gia = edGiaTien.getText().toString();
+                if (gia.isEmpty()){
+                    gia = "0";
+                }
+                int giatien = Integer.parseInt(gia);
+                if(tenmonan.isEmpty()){
                     Toast.makeText(this,getResources().getString(R.string.loithemmonan),Toast.LENGTH_SHORT).show();
                 }else{
 
                     MonAnDTO monAnDTO = new MonAnDTO();
                     monAnDTO.setGiaTien(giatien);
-                    monAnDTO.setHinhAnh("");
-                    monAnDTO.setMaLoai(maloai);
                     monAnDTO.setTenMonAn(tenmonan);
-                    monAnDTO.setLanGoi(0);
 
                     monAnDAO.suaMonAn(maMonAn,monAnDTO);
-                    uploadImage(maMonAn);
+                    if (filePath != null){
+                        uploadImage(maMonAn);
+                    }
                     finish();
                 }
 
