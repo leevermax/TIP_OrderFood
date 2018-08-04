@@ -42,6 +42,7 @@ public class MonAnDAO {
     }
     public void suaMonAn(String maMonAn,MonAnDTO monAnDTO){
 
+//        root.child(maMonAn).child("maLoai").setValue(monAnDTO.getMaLoai());
         root.child(maMonAn).child("tenMonAn").setValue(monAnDTO.getTenMonAn());
         root.child(maMonAn).child("giaTien").setValue(monAnDTO.getGiaTien()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

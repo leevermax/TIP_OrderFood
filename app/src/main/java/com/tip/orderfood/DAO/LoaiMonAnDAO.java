@@ -45,6 +45,12 @@ public class LoaiMonAnDAO {
         return query;
     }
 
+    public Query layLoaiMonAn(String maLoai){
+
+        Query query = root.child(maLoai);
+        return query;
+    }
+
     public void layHinhLoaiMonAn(String maLoai){
 
         final String ma = maLoai;
