@@ -168,35 +168,35 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
                 break;
             case R.id.itNhanVien:
                 showNhanVien();
-                item.setChecked(true);
-                drawerLayout.closeDrawers();
-                break;
-            case R.id.itThongKe:
-                showThongKe();
-                item.setChecked(true);
-                drawerLayout.closeDrawers();
-                break;
-            case R.id.itCaiDat:
-                showTrangCaiDat();
-                item.setChecked(true);
-                drawerLayout.closeDrawers();
-                break;
-            case R.id.iDangNhap:
-                Intent iDangNhap = new Intent(TrangChuActivity.this,DangNhapActivity.class);
-                startActivity(iDangNhap);
-                break;
-            case R.id.iDangXuat:
-                FirebaseAuth.getInstance().signOut();
-                drawerLayout.closeDrawers();
-                Intent iTrangChu = new Intent(TrangChuActivity.this,TrangChuActivity.class);
-                startActivity(iTrangChu);
-                break;
+        item.setChecked(true);
+        drawerLayout.closeDrawers();
+        break;
+        case R.id.itThongKe:
+        showThongKe();
+        item.setChecked(true);
+        drawerLayout.closeDrawers();
+        break;
+        case R.id.itCaiDat:
+        showTrangCaiDat();
+        item.setChecked(true);
+        drawerLayout.closeDrawers();
+        break;
+        case R.id.iDangNhap:
+        Intent iDangNhap = new Intent(TrangChuActivity.this,DangNhapActivity.class);
+        startActivity(iDangNhap);
+        break;
+        case R.id.iDangXuat:
+        FirebaseAuth.getInstance().signOut();
+        drawerLayout.closeDrawers();
+        Intent iTrangChu = new Intent(TrangChuActivity.this,TrangChuActivity.class);
+        startActivity(iTrangChu);
+        break;
 
 
 
-        }
-        return false;
     }
+        return false;
+}
 
     private void showTrangCaiDat() {
         if (user != null){
@@ -231,11 +231,15 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
     }
 
     private void showNhanVien() {
-        NhanVienFragment nhanVienFragment = new NhanVienFragment();
-        FragmentTransaction tranNhanVien = fragmentManager.beginTransaction();
-        tranNhanVien.setCustomAnimations(R.anim.hieuung_activity_vao,R.anim.hieuung_activity_ra);
-        tranNhanVien.replace(R.id.content, nhanVienFragment).addToBackStack("trangchu");
-        tranNhanVien.commit();
+        if (user != null){
+            NhanVienFragment nhanVienFragment = new NhanVienFragment();
+            FragmentTransaction tranNhanVien = fragmentManager.beginTransaction();
+            tranNhanVien.setCustomAnimations(R.anim.hieuung_activity_vao,R.anim.hieuung_activity_ra);
+            tranNhanVien.replace(R.id.content, nhanVienFragment).addToBackStack("trangchu");
+            tranNhanVien.commit();
+        } else {
+            Toast.makeText(this, getResources().getString(R.string.loidangnhaplai), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showBanAn() {
