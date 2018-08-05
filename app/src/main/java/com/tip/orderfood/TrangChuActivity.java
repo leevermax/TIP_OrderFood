@@ -168,33 +168,33 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
                 break;
             case R.id.itNhanVien:
                 showNhanVien();
-        item.setChecked(true);
-        drawerLayout.closeDrawers();
-        break;
-        case R.id.itThongKe:
-        showThongKe();
-        item.setChecked(true);
-        drawerLayout.closeDrawers();
-        break;
-        case R.id.itCaiDat:
-        showTrangCaiDat();
-        item.setChecked(true);
-        drawerLayout.closeDrawers();
-        break;
-        case R.id.iDangNhap:
-        Intent iDangNhap = new Intent(TrangChuActivity.this,DangNhapActivity.class);
-        startActivity(iDangNhap);
-        break;
-        case R.id.iDangXuat:
-        FirebaseAuth.getInstance().signOut();
-        drawerLayout.closeDrawers();
-        Intent iTrangChu = new Intent(TrangChuActivity.this,TrangChuActivity.class);
-        startActivity(iTrangChu);
-        break;
+                item.setChecked(true);
+                drawerLayout.closeDrawers();
+                break;
+            case R.id.itThongKe:
+                showThongKe();
+                item.setChecked(true);
+                drawerLayout.closeDrawers();
+                 break;
+            case R.id.itCaiDat:
+                showTrangCaiDat();
+                item.setChecked(true);
+                drawerLayout.closeDrawers();
+            break;
+                case R.id.iDangNhap:
+                Intent iDangNhap = new Intent(TrangChuActivity.this,DangNhapActivity.class);
+                startActivity(iDangNhap);
+                break;
+            case R.id.iDangXuat:
+                FirebaseAuth.getInstance().signOut();
+                drawerLayout.closeDrawers();
+                Intent iTrangChu = new Intent(TrangChuActivity.this,TrangChuActivity.class);
+                startActivity(iTrangChu);
+                break;
 
 
 
-    }
+        }
         return false;
 }
 
