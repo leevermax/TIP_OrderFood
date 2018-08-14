@@ -51,19 +51,21 @@ public class SoLuongActivity extends AppCompatActivity  implements View.OnClickL
 
     @Override
     public void onClick(View v) {
+        String soLuong = edSoLuongMonAn.getText().toString();
+        if (!soLuong.isEmpty()){
+            int soLuongGoi = Integer.parseInt(soLuong);
+            ChiTietGoiMonDTO chiTietGoiMonDTO = new ChiTietGoiMonDTO();
+            chiTietGoiMonDTO.setMaGoiMon(maGoiMon);
+            chiTietGoiMonDTO.setMaMonAn(maMonAn);
+            chiTietGoiMonDTO.setSoLuong(soLuongGoi);
+            chiTietGoiMonDTO.setHoanThanh(false);
+            chiTietGoiMonDTO.setPhucVu(false);
 
-        int soLuongGoi = Integer.parseInt(edSoLuongMonAn.getText().toString());
-        ChiTietGoiMonDTO chiTietGoiMonDTO = new ChiTietGoiMonDTO();
-        chiTietGoiMonDTO.setMaGoiMon(maGoiMon);
-        chiTietGoiMonDTO.setMaMonAn(maMonAn);
-        chiTietGoiMonDTO.setSoLuong(soLuongGoi);
-        chiTietGoiMonDTO.setHoanThanh(false);
-        chiTietGoiMonDTO.setPhucVu(false);
+            goiMonDAO.themCTGoiMon(chiTietGoiMonDTO);
 
-        goiMonDAO.themCTGoiMon(chiTietGoiMonDTO);
-
-        monAnDAO.tangDiemMonAn(maMonAn,soLuongGoi);
-        Toast.makeText(this, getResources().getString(R.string.themthanhcong), Toast.LENGTH_SHORT).show();
-        finish();
+            monAnDAO.tangDiemMonAn(maMonAn,soLuongGoi);
+            Toast.makeText(this, getResources().getString(R.string.themthanhcong), Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 }
