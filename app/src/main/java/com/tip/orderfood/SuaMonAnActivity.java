@@ -11,11 +11,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -60,6 +64,8 @@ public class SuaMonAnActivity extends AppCompatActivity implements View.OnClickL
     ImageView imHinhThucDon;
     Button btnDongYThemMonAn, btnThoatThemMonAn;
     EditText edTenMonAn, edGiaTien;
+    LinearLayout LnLoai;
+    TextView txtSuaMonAn;
 
     String maMonAn;
 
@@ -86,6 +92,9 @@ public class SuaMonAnActivity extends AppCompatActivity implements View.OnClickL
                 MonAnDTO monAnDTO = dataSnapshot.getValue(MonAnDTO.class);
                 edTenMonAn.setText(monAnDTO.getTenMonAn());
                 edGiaTien.setText(String.valueOf(monAnDTO.getGiaTien()));
+
+
+
                 if (!monAnDTO.getHinhAnh().equals("")){
                     Picasso.get().load(monAnDTO.getHinhAnh().toString()).into(imHinhThucDon);
                 }
@@ -108,6 +117,8 @@ public class SuaMonAnActivity extends AppCompatActivity implements View.OnClickL
     private void addConTrols() {
         imThemLoaiThucDon = findViewById(R.id.imThemLoaiThucDon);
         spinLoaiMonAn = findViewById(R.id.spinLoaiMonAn);
+        txtSuaMonAn = findViewById(R.id.txtSuaMonAn);
+        txtSuaMonAn.setText(getResources().getString(R.string.suamonan));
 
         loaiMonAnDTOS = new ArrayList<>();
         loaiMonAnDAO = new LoaiMonAnDAO(this);
@@ -126,7 +137,9 @@ public class SuaMonAnActivity extends AppCompatActivity implements View.OnClickL
         storage = FirebaseStorage.getInstance();
         mStorageRef = storage.getReference("ImageThucDon");
 
-        hienThiSpinnerLoaiMonAn();
+//        hienThiSpinnerLoaiMonAn();
+        LnLoai = findViewById(R.id.LnLoai);
+        LnLoai.setVisibility(View.INVISIBLE);
 
         Intent iSuaMonAn = getIntent();
         maMonAn = iSuaMonAn.getStringExtra("maMonAn");
@@ -175,25 +188,30 @@ public class SuaMonAnActivity extends AppCompatActivity implements View.OnClickL
                 startActivityForResult(Intent.createChooser(iMoHinh,"Chọn Hình Thực Đơn"),REQUEST_CODE_MOHINH);
                 break;
             case R.id.btnDongYThemMonAn:
-                int vitri = spinLoaiMonAn.getSelectedItemPosition();
-                String maloai = loaiMonAnDTOS.get(vitri).getMaLoai();
+//                int vitri = spinLoaiMonAn.getSelectedItemPosition();
+//                String maloai = loaiMonAnDTOS.get(vitri).getMaLoai();
                 String tenmonan = edTenMonAn.getText().toString();
                 SuaDuLieu suaDuLieu = new SuaDuLieu();
                 tenmonan = suaDuLieu.toiUuChuoi(tenmonan);
-                int giatien = Integer.parseInt(edGiaTien.getText().toString());
-                if(tenmonan.length() == 0 || TextUtils.isEmpty(edGiaTien.getText().toString()) || tenmonan.equals("")){
+
+                String gia = edGiaTien.getText().toString();
+                if (gia.isEmpty()){
+                    gia = "0";
+                }
+                int giatien = Integer.parseInt(gia);
+                if(tenmonan.isEmpty()){
                     Toast.makeText(this,getResources().getString(R.string.loithemmonan),Toast.LENGTH_SHORT).show();
                 }else{
 
                     MonAnDTO monAnDTO = new MonAnDTO();
                     monAnDTO.setGiaTien(giatien);
-                    monAnDTO.setHinhAnh("");
-                    monAnDTO.setMaLoai(maloai);
+//                    monAnDTO.setMaLoai(maloai);
                     monAnDTO.setTenMonAn(tenmonan);
-                    monAnDTO.setLanGoi(0);
 
                     monAnDAO.suaMonAn(maMonAn,monAnDTO);
-                    uploadImage(maMonAn);
+                    if (filePath != null){
+                        uploadImage(maMonAn);
+                    }
                     finish();
                 }
 
