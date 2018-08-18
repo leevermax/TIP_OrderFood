@@ -66,9 +66,13 @@ public class SoLuongActivity extends AppCompatActivity  implements View.OnClickL
             monAnDAO.tangDiemMonAn(maMonAn,soLuongGoi);
             Toast.makeText(this, getResources().getString(R.string.themthanhcong), Toast.LENGTH_SHORT).show();
             finish();
+<<<<<<< HEAD
+        }
+=======
         } else {
             Toast.makeText(this, getResources().getString(R.string.khongduocdetrong), Toast.LENGTH_SHORT).show();
         }
 
+>>>>>>> 9a8c810dd763f41b308ace5f612f8a2de2a2775b
     }
 }
