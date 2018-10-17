@@ -14,6 +14,7 @@
         android:layout_margin="@dimen/size10dp"
         android:textColor="@color/colorGray"
         android:textColorHint="@color/colorGray"
+        android:numeric="integer"
         />
 
     <Button
